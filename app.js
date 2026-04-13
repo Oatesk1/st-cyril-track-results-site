@@ -3,13 +3,15 @@ const resultsEl = document.getElementById("results");
 const statusTextEl = document.getElementById("statusText");
 let athletes = [];
 
-function renderEventList(events) {
+function renderEventList(events, isPrFromLatestMeet = []) {
     const list = document.createElement("ul");
     list.className = "record-list";
 
     Object.entries(events).forEach(([eventName, mark]) => {
         const item = document.createElement("li");
-        item.textContent = `${eventName} - ${mark}`;
+        const isFromLatestMeet = isPrFromLatestMeet.includes(eventName);
+        const asterisk = isFromLatestMeet ? '*' : '';
+        item.textContent = `${eventName} - ${mark}${asterisk}`;
         list.appendChild(item);
     });
 
@@ -31,6 +33,8 @@ function renderResults(matches, query) {
 
     statusTextEl.textContent = `Found ${matches.length} athlete${matches.length > 1 ? "s" : ""}.`;
 
+    let hasAsterisk = false;
+
     matches.forEach((athlete) => {
         const card = document.createElement("article");
         card.className = "result-card";
@@ -46,7 +50,11 @@ function renderResults(matches, query) {
             const prLabel = document.createElement("p");
             prLabel.textContent = "Personal Records";
             card.appendChild(prLabel);
-            card.appendChild(renderEventList(personalRecords));
+            const prFromLatestMeet = athlete.pr_from_latest_meet || [];
+            if (prFromLatestMeet.length > 0) {
+                hasAsterisk = true;
+            }
+            card.appendChild(renderEventList(personalRecords, prFromLatestMeet));
         }
 
         const latestResult = (athlete.results || []).find((result) => result.is_latest_meet) || (athlete.results || [])[0];
@@ -60,6 +68,14 @@ function renderResults(matches, query) {
 
         resultsEl.appendChild(card);
     });
+
+    // Add footnote if there are asterisks
+    if (hasAsterisk) {
+        const footnote = document.createElement("div");
+        footnote.className = "footnote";
+        footnote.innerHTML = '<p><small>* PR from Most Recent Competition</small></p>';
+        resultsEl.appendChild(footnote);
+    }
 }
 
 searchInput.addEventListener("input", (event) => {

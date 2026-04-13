@@ -84,3 +84,15 @@ input:focus {
 .record-list li {
     margin: 3px 0;
 }
+
+.footnote {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.footnote p {
+    margin: 0;
+}
