@@ -75,7 +75,10 @@ searchInput.addEventListener("input", (event) => {
 
 async function loadAthletes() {
     try {
-        const response = await fetch("./athlete_records.json");
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`./athlete_records.json?ts=${cacheBuster}`, {
+            cache: "no-store",
+        });
         if (!response.ok) {
             throw new Error("Could not load athlete_records.json");
         }
