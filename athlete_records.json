@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-13T12:33:45",
+  "generated_at": "2026-04-13T13:44:43",
   "team": "St. Cyril of Jerusalem",
-  "latest_meet_date": "4/12/2026",
+  "latest_meet_date": "4/13/2026",
   "events": [
     "100M",
     "200M",
@@ -34,7 +34,7 @@
             "400M": "1:34.99",
             "JV": "17-04.00"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/28/2026",
@@ -76,14 +76,24 @@
       "name": "Chretin, Nicolas",
       "search_name": "chretin, nicolas",
       "personal_records": {
-        "100M": "13.83",
-        "200M": "28.69",
+        "100M": "11.65",
+        "200M": "22.22",
         "400M": "1:08.77",
         "JV": "46-02",
         "SP": "33-01.00",
         "LJ": "10-03.00"
       },
       "results": [
+        {
+          "meet_date": "4/13/2026",
+          "meet_name": "Fake Meet Data 04.13.26 Test",
+          "source_file": "Fake Meet Data 04.13.26 TEST.xlsx",
+          "events": {
+            "100M": "11.65",
+            "200M": "22.22"
+          },
+          "is_latest_meet": true
+        },
         {
           "meet_date": "4/12/2026",
           "meet_name": "Fiya Meet 3 April 12 2026 Culver City High School",
@@ -94,7 +104,7 @@
             "400M": "1:08.77",
             "SP": "33-01.00"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/22/2026",
@@ -204,7 +214,7 @@
             "200M": "35.54",
             "400M": "1:20.36"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/28/2026",
@@ -339,6 +349,15 @@
       },
       "results": [
         {
+          "meet_date": "4/13/2026",
+          "meet_name": "Fake Meet Data 04.13.26 Test",
+          "source_file": "Fake Meet Data 04.13.26 TEST.xlsx",
+          "events": {
+            "LJ": "11.5"
+          },
+          "is_latest_meet": true
+        },
+        {
           "meet_date": "4/12/2026",
           "meet_name": "Fiya Meet 3 April 12 2026 Culver City High School",
           "source_file": "FIYA Meet 3 April 12 2026 Culver City High School.xlsx",
@@ -348,7 +367,7 @@
             "800M": "3:15.25",
             "LJ": "9-04.00"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/28/2026",
@@ -404,7 +423,7 @@
             "100M": "20.48",
             "JV": "11-02.00"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         }
       ]
     },
@@ -427,7 +446,7 @@
             "400M": "1:40.50",
             "JV": "12-06.00"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/28/2026",
@@ -701,7 +720,7 @@
             "200M": "30.70",
             "400M": "1:12.66"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/22/2026",
