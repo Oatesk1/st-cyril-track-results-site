@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Athlete Records Search</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <main class="container">
+        <h1>Athlete Records</h1>
+        <p class="subtitle">Search by athlete name to view records.</p>
+
+        <section class="search-card" aria-label="Athlete search">
+            <label for="nameSearch">Athlete name</label>
+            <input id="nameSearch" type="text" placeholder="Type a name, for example: Ava" autocomplete="off" />
+        </section>
+
+        <section>
+            <h2>Results</h2>
+            <p id="statusText" class="status">Loading athletes from JSON...</p>
+            <div id="results"></div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
