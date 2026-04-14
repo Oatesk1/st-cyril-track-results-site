@@ -220,9 +220,7 @@ function renderAthleteCharts(athlete, container) {
                         },
                     },
                     y: {
-                        // Running events: reverse so lower (faster) times are at the bottom
-                        // and improvement shows as a downward line
-                        reverse: isRunning,
+                        reverse: false,
                         min: minVal - padding,
                         max: maxVal + padding,
                         grid: {
