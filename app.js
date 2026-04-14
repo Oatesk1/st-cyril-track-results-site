@@ -66,6 +66,11 @@ function renderResults(matches, query) {
             card.appendChild(renderEventList(latestResult.events));
         }
 
+        // Render line charts for events with 2+ data points
+        if (typeof renderAthleteCharts === "function") {
+            renderAthleteCharts(athlete, card);
+        }
+
         resultsEl.appendChild(card);
     });
 
