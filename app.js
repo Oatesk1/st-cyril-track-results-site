@@ -133,7 +133,7 @@ function renderChart(container, eventName, dataPoints) {
                 y: {
                     min: yMin,
                     max: yMax,
-                    reverse: !isField,
+                    reverse: false,
                     ticks: {
                         callback: (val) => formatAxisLabel(eventName, val),
                         font: { size: 11 },
