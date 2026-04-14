@@ -96,3 +96,135 @@ input:focus {
 .footnote p {
     margin: 0;
 }
+
+/* Navigation */
+.site-nav {
+    background: var(--accent);
+    padding: 10px 16px;
+    display: flex;
+    gap: 8px;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+}
+
+/* Charts */
+.chart-header {
+    font-weight: 600;
+    margin: 16px 0 4px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    color: var(--accent);
+}
+
+.chart-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chart-wrap {
+    position: relative;
+    height: 220px;
+    padding: 4px 0;
+}
+
+.chart-title {
+    margin: 0 0 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+/* Team Charts page */
+.event-section {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.event-section h3 {
+    margin: 0 0 8px;
+    color: var(--accent);
+}
+
+.event-chart-wrap {
+    position: relative;
+    height: 300px;
+}
+
+.chart-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.chart-tab {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    transition: all 0.15s;
+}
+
+.chart-tab:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.chart-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.team-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.summary-stat {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+}
+
+.summary-stat .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.summary-stat .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 2px;
+}

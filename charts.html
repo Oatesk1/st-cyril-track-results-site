@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Charts - St. Cyril Track</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <nav class="site-nav">
+        <a href="index.html" class="nav-link">Athlete Search</a>
+        <a href="charts.html" class="nav-link active">Team Charts</a>
+    </nav>
+    <main class="container">
+        <h1>Team Charts</h1>
+        <p class="subtitle">Visual performance data for the entire team.</p>
+
+        <div id="teamSummary" class="team-summary"></div>
+
+        <div class="chart-tabs" id="chartTabs"></div>
+
+        <div id="chartContent"></div>
+    </main>
+
+    <script src="charts.js"></script>
+</body>
+
+</html>
