@@ -96,3 +96,44 @@ input:focus {
 .footnote p {
     margin: 0;
 }
+
+/* Charts */
+.charts-section {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+}
+
+.charts-heading {
+    font-weight: 600;
+    margin: 0 0 10px;
+}
+
+.chart-wrapper {
+    margin-bottom: 18px;
+}
+
+.chart-wrapper canvas {
+    max-height: 200px;
+}
+
+.chart-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.trend-improved {
+    font-size: 12px;
+    font-weight: 600;
+    color: #16a34a;
+    margin-left: 6px;
+}
+
+.trend-declined {
+    font-size: 12px;
+    font-weight: 600;
+    color: #dc2626;
+    margin-left: 6px;
+}
