@@ -3,6 +3,41 @@ const resultsEl = document.getElementById("results");
 const statusTextEl = document.getElementById("statusText");
 let athletes = [];
 
+function renderPersonalRecordsGrid(records, isPrFromLatestMeet = []) {
+    const grid = document.createElement("div");
+    grid.className = "pr-grid";
+
+    Object.entries(records).forEach(([eventName, mark]) => {
+        const item = document.createElement("div");
+        item.className = "pr-item";
+
+        const eventEl = document.createElement("span");
+        eventEl.className = "pr-event";
+        eventEl.textContent = eventName;
+        item.appendChild(eventEl);
+
+        const valueWrap = document.createElement("div");
+        valueWrap.className = "pr-value-wrap";
+
+        const valueEl = document.createElement("span");
+        valueEl.className = "pr-value";
+        valueEl.textContent = mark;
+        valueWrap.appendChild(valueEl);
+
+        if (isPrFromLatestMeet.includes(eventName)) {
+            const badge = document.createElement("span");
+            badge.className = "pr-badge";
+            badge.textContent = "New";
+            valueWrap.appendChild(badge);
+        }
+
+        item.appendChild(valueWrap);
+        grid.appendChild(item);
+    });
+
+    return grid;
+}
+
 function renderEventList(events, isPrFromLatestMeet = []) {
     const list = document.createElement("ul");
     list.className = "record-list";
@@ -48,22 +83,28 @@ function renderResults(matches, query) {
 
         if (personalRecordKeys.length > 0) {
             const prLabel = document.createElement("p");
+            prLabel.className = "section-label";
             prLabel.textContent = "Personal Records";
             card.appendChild(prLabel);
             const prFromLatestMeet = athlete.pr_from_latest_meet || [];
             if (prFromLatestMeet.length > 0) {
                 hasAsterisk = true;
             }
-            card.appendChild(renderEventList(personalRecords, prFromLatestMeet));
+            card.appendChild(renderPersonalRecordsGrid(personalRecords, prFromLatestMeet));
         }
 
         const latestResult = (athlete.results || []).find((result) => result.is_latest_meet) || (athlete.results || [])[0];
 
         if (latestResult && latestResult.events) {
             const latestLabel = document.createElement("p");
+            latestLabel.className = "section-label";
             latestLabel.textContent = `Latest Meet: ${latestResult.meet_name} (${latestResult.meet_date})`;
             card.appendChild(latestLabel);
             card.appendChild(renderEventList(latestResult.events));
+        }
+
+        if (typeof renderAthleteCharts === "function") {
+            renderAthleteCharts(athlete, card);
         }
 
         resultsEl.appendChild(card);
@@ -73,7 +114,7 @@ function renderResults(matches, query) {
     if (hasAsterisk) {
         const footnote = document.createElement("div");
         footnote.className = "footnote";
-        footnote.innerHTML = '<p><small>* PR from Most Recent Competition</small></p>';
+        footnote.innerHTML = '<p><small>New marks were set in the most recent competition.</small></p>';
         resultsEl.appendChild(footnote);
     }
 }
