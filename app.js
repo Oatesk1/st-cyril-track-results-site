@@ -53,6 +53,57 @@ function renderEventList(events, isPrFromLatestMeet = []) {
     return list;
 }
 
+function parseMeetDateValue(dateString) {
+    const [month, day, year] = (dateString || "").split("/").map(Number);
+    return new Date(year, month - 1, day).getTime();
+}
+
+function getSortedResults(results = []) {
+    return [...results].sort((left, right) => parseMeetDateValue(right.meet_date) - parseMeetDateValue(left.meet_date));
+}
+
+function renderMeetHistory(results = []) {
+    if (results.length <= 1) {
+        return null;
+    }
+
+    const details = document.createElement("details");
+    details.className = "meet-history";
+
+    const summary = document.createElement("summary");
+    summary.className = "meet-history-summary";
+    summary.textContent = `Show all meet history (${results.length} meets)`;
+    details.appendChild(summary);
+
+    const historyList = document.createElement("div");
+    historyList.className = "meet-history-list";
+
+    results.forEach((result, index) => {
+        const item = document.createElement("section");
+        item.className = "meet-history-item";
+
+        const header = document.createElement("div");
+        header.className = "meet-history-item-header";
+
+        const title = document.createElement("p");
+        title.className = "meet-history-item-title";
+        title.textContent = result.meet_name || `Meet ${index + 1}`;
+        header.appendChild(title);
+
+        const meta = document.createElement("p");
+        meta.className = "meet-history-item-date";
+        meta.textContent = result.meet_date || "Date unavailable";
+        header.appendChild(meta);
+
+        item.appendChild(header);
+        item.appendChild(renderEventList(result.events || {}));
+        historyList.appendChild(item);
+    });
+
+    details.appendChild(historyList);
+    return details;
+}
+
 function renderResults(matches, query) {
     resultsEl.innerHTML = "";
 
@@ -71,6 +122,7 @@ function renderResults(matches, query) {
     let hasAsterisk = false;
 
     matches.forEach((athlete) => {
+        const sortedResults = getSortedResults(athlete.results || []);
         const card = document.createElement("article");
         card.className = "result-card";
 
@@ -93,7 +145,7 @@ function renderResults(matches, query) {
             card.appendChild(renderPersonalRecordsGrid(personalRecords, prFromLatestMeet));
         }
 
-        const latestResult = (athlete.results || []).find((result) => result.is_latest_meet) || (athlete.results || [])[0];
+        const latestResult = sortedResults.find((result) => result.is_latest_meet) || sortedResults[0];
 
         if (latestResult && latestResult.events) {
             const latestLabel = document.createElement("p");
@@ -101,6 +153,15 @@ function renderResults(matches, query) {
             latestLabel.textContent = `Latest Meet: ${latestResult.meet_name} (${latestResult.meet_date})`;
             card.appendChild(latestLabel);
             card.appendChild(renderEventList(latestResult.events));
+        }
+
+        const meetHistory = renderMeetHistory(sortedResults);
+        if (meetHistory) {
+            const historyLabel = document.createElement("p");
+            historyLabel.className = "section-label";
+            historyLabel.textContent = "Meet History";
+            card.appendChild(historyLabel);
+            card.appendChild(meetHistory);
         }
 
         if (typeof renderAthleteCharts === "function") {
