@@ -168,10 +168,10 @@ function renderAthleteCharts(athlete, container) {
         const chartWrapper = document.createElement("div");
         chartWrapper.className = "chart-wrapper";
 
-        const first = entries[0].numericValue;
         const last = entries[entries.length - 1].numericValue;
-        const improved = isRunning ? last < first : last > first;
-        const same = first === last;
+        const previous = entries[entries.length - 2].numericValue;
+        const improved = isRunning ? last < previous : last > previous;
+        const same = previous === last;
 
         const chartHeader = document.createElement("div");
         chartHeader.className = "chart-header";
@@ -186,7 +186,7 @@ function renderAthleteCharts(athlete, container) {
 
         const chartSubtitle = document.createElement("div");
         chartSubtitle.className = "chart-subtitle";
-        chartSubtitle.textContent = `${entries.length} meets tracked`;
+        chartSubtitle.textContent = `${entries.length} meets tracked • vs prior meet`;
         titleGroup.appendChild(chartSubtitle);
 
         const chartMeta = document.createElement("div");
@@ -195,8 +195,8 @@ function renderAthleteCharts(athlete, container) {
 
         if (!same) {
             const directionLabel = improved
-                ? (isRunning ? `Faster by ${formatDelta(last - first, true)}` : `Up ${formatDelta(last - first, false)}`)
-                : (isRunning ? `Slower by ${formatDelta(last - first, true)}` : `Down ${formatDelta(last - first, false)}`);
+                ? (isRunning ? `Faster by ${formatDelta(last - previous, true)} over last mark` : `Up ${formatDelta(last - previous, false)} over last mark`)
+                : (isRunning ? `Slower by ${formatDelta(last - previous, true)} over last mark` : `Down ${formatDelta(last - previous, false)} over last mark`);
             chartMeta.appendChild(createInfoPill(directionLabel, `trend-chip ${theme.chip} ${improved ? "trend-chip--up" : "trend-chip--down"}`));
         }
 
