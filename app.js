@@ -2,6 +2,174 @@ const searchInput = document.getElementById("nameSearch");
 const resultsEl = document.getElementById("results");
 const statusTextEl = document.getElementById("statusText");
 let athletes = [];
+let athleteGoals = {};
+let divisionTargets = {};
+let athleteDivisionAssignments = {};
+let storedDivisionAssignments = {};
+let currentQuery = "";
+
+const DIVISION_ASSIGNMENTS_STORAGE_KEY = "athleteDivisionAssignments";
+
+function normalizeGoalMap(data) {
+    if (!data || typeof data !== "object") {
+        return {};
+    }
+
+    if (data.goals && typeof data.goals === "object") {
+        return data.goals;
+    }
+
+    return data;
+}
+
+function normalizeDivisionTargets(data) {
+    if (!data || typeof data !== "object") {
+        return {};
+    }
+
+    if (data.groups && typeof data.groups === "object") {
+        return data.groups;
+    }
+
+    return data;
+}
+
+function normalizeDivisionAssignments(data) {
+    if (!data || typeof data !== "object") {
+        return {};
+    }
+
+    if (data.assignments && typeof data.assignments === "object") {
+        return data.assignments;
+    }
+
+    return data;
+}
+
+function loadStoredDivisionAssignments() {
+    try {
+        const raw = window.localStorage.getItem(DIVISION_ASSIGNMENTS_STORAGE_KEY);
+        if (!raw) {
+            return {};
+        }
+
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" ? parsed : {};
+    } catch {
+        return {};
+    }
+}
+
+function saveStoredDivisionAssignments(assignments) {
+    try {
+        window.localStorage.setItem(DIVISION_ASSIGNMENTS_STORAGE_KEY, JSON.stringify(assignments));
+    } catch {
+        // Ignore storage failures so the app still works without persistence.
+    }
+}
+
+function getAvailableDivisionOptions() {
+    return Object.entries(divisionTargets)
+        .map(([key, value]) => ({ key, label: value.label || key }))
+        .sort((left, right) => left.label.localeCompare(right.label));
+}
+
+function getAthleteDivisionKey(athlete) {
+    return storedDivisionAssignments[athlete.id]
+        || athleteDivisionAssignments[athlete.id]
+        || athlete.division_key
+        || "";
+}
+
+function getAthleteDivisionGroup(athlete) {
+    const divisionKey = getAthleteDivisionKey(athlete);
+    if (!divisionKey || !divisionTargets[divisionKey]) {
+        return null;
+    }
+
+    return {
+        key: divisionKey,
+        ...divisionTargets[divisionKey],
+    };
+}
+
+function getMatches(query) {
+    return athletes.filter((athlete) => {
+        const name = (athlete.name || "").toLowerCase();
+        const searchName = (athlete.search_name || "").toLowerCase();
+        return name.includes(query) || searchName.includes(query);
+    });
+}
+
+function rerenderCurrentResults() {
+    renderResults(getMatches(currentQuery), currentQuery);
+}
+
+function renderDivisionSelector(athlete) {
+    const divisionOptions = getAvailableDivisionOptions();
+    if (divisionOptions.length === 0) {
+        return null;
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "division-selector";
+
+    const label = document.createElement("label");
+    label.className = "division-selector-label";
+    label.setAttribute("for", `division-${athlete.id}`);
+    label.textContent = "Divsion";
+    wrapper.appendChild(label);
+
+    const select = document.createElement("select");
+    select.className = "division-selector-input";
+    select.id = `division-${athlete.id}`;
+
+    const blankOption = document.createElement("option");
+    blankOption.value = "";
+    blankOption.textContent = "Choose Divsion";
+    select.appendChild(blankOption);
+
+    divisionOptions.forEach((option) => {
+        const optionEl = document.createElement("option");
+        optionEl.value = option.key;
+        optionEl.textContent = option.label;
+        select.appendChild(optionEl);
+    });
+
+    select.value = getAthleteDivisionKey(athlete);
+    select.addEventListener("change", () => {
+        storedDivisionAssignments = {
+            ...storedDivisionAssignments,
+            [athlete.id]: select.value,
+        };
+        saveStoredDivisionAssignments(storedDivisionAssignments);
+        rerenderCurrentResults();
+    });
+    wrapper.appendChild(select);
+
+    const helpText = document.createElement("p");
+    helpText.className = "division-selector-help";
+    helpText.textContent = "Controls which 2025 CYO benchmark marks are shown with the chart.";
+    wrapper.appendChild(helpText);
+
+    return wrapper;
+}
+
+async function loadJson(url, errorMessage, { optional = false } = {}) {
+    const cacheBuster = new Date().getTime();
+    const response = await fetch(`${url}?ts=${cacheBuster}`, {
+        cache: "no-store",
+    });
+
+    if (!response.ok) {
+        if (optional && response.status === 404) {
+            return null;
+        }
+        throw new Error(errorMessage);
+    }
+
+    return response.json();
+}
 
 function renderPersonalRecordsGrid(records, isPrFromLatestMeet = []) {
     const grid = document.createElement("div");
@@ -123,6 +291,8 @@ function renderResults(matches, query) {
 
     matches.forEach((athlete) => {
         const sortedResults = getSortedResults(athlete.results || []);
+        const athleteGoalMap = athleteGoals[athlete.id] || athleteGoals[athlete.search_name] || athleteGoals[athlete.name] || {};
+        const athleteDivisionGroup = getAthleteDivisionGroup(athlete);
         const card = document.createElement("article");
         card.className = "result-card";
 
@@ -164,8 +334,16 @@ function renderResults(matches, query) {
             card.appendChild(meetHistory);
         }
 
+        const divisionSelector = renderDivisionSelector(athlete);
+        if (divisionSelector) {
+            card.appendChild(divisionSelector);
+        }
+
         if (typeof renderAthleteCharts === "function") {
-            renderAthleteCharts(athlete, card);
+            renderAthleteCharts(athlete, card, {
+                customGoals: athleteGoalMap,
+                divisionGroup: athleteDivisionGroup,
+            });
         }
 
         resultsEl.appendChild(card);
@@ -181,28 +359,24 @@ function renderResults(matches, query) {
 }
 
 searchInput.addEventListener("input", (event) => {
-    const query = event.target.value.trim().toLowerCase();
-    const matches = athletes.filter((athlete) => {
-        const name = (athlete.name || "").toLowerCase();
-        const searchName = (athlete.search_name || "").toLowerCase();
-        return name.includes(query) || searchName.includes(query);
-    });
-
-    renderResults(matches, query);
+    currentQuery = event.target.value.trim().toLowerCase();
+    renderResults(getMatches(currentQuery), currentQuery);
 });
 
 async function loadAthletes() {
     try {
-        const cacheBuster = new Date().getTime();
-        const response = await fetch(`./athlete_records.json?ts=${cacheBuster}`, {
-            cache: "no-store",
-        });
-        if (!response.ok) {
-            throw new Error("Could not load athlete_records.json");
-        }
+        const [data, goalsData, divisionTargetsData, divisionAssignmentsData] = await Promise.all([
+            loadJson("./athlete_records.json", "Could not load athlete_records.json"),
+            loadJson("./athlete_goals.json", "Could not load athlete_goals.json", { optional: true }),
+            loadJson("./division_targets.json", "Could not load division_targets.json", { optional: true }),
+            loadJson("./athlete_divisions.json", "Could not load athlete_divisions.json", { optional: true }),
+        ]);
 
-        const data = await response.json();
         athletes = Array.isArray(data.athletes) ? data.athletes : [];
+        athleteGoals = normalizeGoalMap(goalsData);
+        divisionTargets = normalizeDivisionTargets(divisionTargetsData);
+        athleteDivisionAssignments = normalizeDivisionAssignments(divisionAssignmentsData);
+        storedDivisionAssignments = loadStoredDivisionAssignments();
         statusTextEl.textContent = "Start typing to search.";
     } catch (error) {
         statusTextEl.textContent = "Could not load athlete data. Check athlete_records.json and run with a local server.";

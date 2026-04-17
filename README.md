@@ -8,6 +8,10 @@ A very simple starter website shell where parents can search for an athlete by n
 - `styles.css` - basic page styling
 - `app.js` - loads JSON data and handles search/results rendering
 - `athlete_records.json` - athlete data source from your track data project
+- `athlete_goals.json` - optional goal marks by athlete and event for chart target lines
+- `division_targets.json` - generated benchmark lines by division and event from MileSplit results
+- `athlete_divisions.json` - starter athlete-to-division assignments for benchmark charts
+- `build_division_targets.py` - regenerates `division_targets.json` from the MileSplit raw results page
 
 ## Data format
 
@@ -35,6 +39,79 @@ A very simple starter website shell where parents can search for an athlete by n
 		}
 	]
 }
+```
+
+## Goal data format
+
+`athlete_goals.json` is optional. When present, it adds a dashed goal line to each event chart for that athlete.
+
+Use athlete `id` values from `athlete_records.json` as the keys:
+
+```json
+{
+	"goals": {
+		"chretin-gillian": {
+			"100M": "18.50",
+			"400M": "1:32.00",
+			"JV": "22-00"
+		},
+		"chretin-nicolas": {
+			"100M": "13.50",
+			"SP": "35-00"
+		}
+	}
+}
+```
+
+Use the same mark formats already used in `athlete_records.json`:
+
+- Running events: `19.03` or `1:08.77`
+- Field events: `20-03` or `33-01.00`
+
+## Division target workflow
+
+`division_targets.json` contains three benchmark lines per event:
+
+- `prelim_qualifying` - the last listed mark in prelims
+- `finals_qualifying` - the prelim mark that matched the size of the finals field
+- `winner` - the winning finals mark
+
+The app uses `athlete_divisions.json` to decide which division benchmark set applies to each athlete. You can also choose a target group from the athlete card in the browser; that choice is saved locally in the browser.
+
+Example assignment file:
+
+```json
+{
+	"assignments": {
+		"chretin-gillian": "1a-girls",
+		"chretin-nicolas": "1a-boys"
+	}
+}
+```
+
+Example generated target shape:
+
+```json
+{
+	"groups": {
+		"1a-boys": {
+			"label": "1A Boys",
+			"events": {
+				"100M": {
+					"prelim_qualifying": "14.70",
+					"finals_qualifying": "12.93",
+					"winner": "11.93"
+				}
+			}
+		}
+	}
+}
+```
+
+To regenerate division benchmarks from the MileSplit source page, run:
+
+```powershell
+c:/Users/kevin/athlete-records-starter/.venv/Scripts/python.exe build_division_targets.py
 ```
 
 ## Run locally

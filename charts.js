@@ -30,6 +30,33 @@ const EVENT_THEMES = {
     },
 };
 
+const TARGET_LINE_STYLES = {
+    prelim_qualifying: {
+        label: "2025 CYO Prelim Qual.",
+        color: "#597796",
+        dash: [6, 4],
+        pillClass: "chart-pill--prelim",
+    },
+    finals_qualifying: {
+        label: "2025 CYO Finals Qual.",
+        color: "#b47b17",
+        dash: [10, 5],
+        pillClass: "chart-pill--finals",
+    },
+    winner: {
+        label: "2025 CYO Winner",
+        color: "#b54d3e",
+        dash: [2, 4],
+        pillClass: "chart-pill--winner",
+    },
+    custom_goal: {
+        label: "Custom Goal",
+        color: "#c27a1a",
+        dash: [8, 6],
+        pillClass: "chart-pill--goal",
+    },
+};
+
 function parseTime(str) {
     if (!str) return null;
     const parts = str.split(":");
@@ -93,6 +120,19 @@ function formatDelta(delta, isRunning) {
     return `${inches.toFixed(2)} in`;
 }
 
+function compareToTarget(value, targetValue, isRunning) {
+    if (!Number.isFinite(value) || !Number.isFinite(targetValue)) {
+        return "neutral";
+    }
+
+    if (value === targetValue) {
+        return "neutral";
+    }
+
+    const isBetter = isRunning ? value < targetValue : value > targetValue;
+    return isBetter ? "positive" : "negative";
+}
+
 function getEventTheme(eventName) {
     return RUNNING_EVENTS.has(eventName) ? EVENT_THEMES.running : EVENT_THEMES.field;
 }
@@ -102,6 +142,86 @@ function createInfoPill(text, className = "") {
     pill.className = `chart-pill ${className}`.trim();
     pill.textContent = text;
     return pill;
+}
+
+function createDetailRow(label, value, options = {}) {
+    const row = document.createElement(options.clickable ? "button" : "div");
+    row.className = "chart-detail-row";
+
+    if (options.clickable) {
+        row.type = "button";
+        row.classList.add("chart-detail-row--interactive");
+    }
+
+    if (options.active) {
+        row.classList.add("chart-detail-row--active");
+    }
+
+    const labelEl = document.createElement("span");
+    labelEl.className = "chart-detail-label";
+    labelEl.textContent = label;
+    row.appendChild(labelEl);
+
+    const valueEl = document.createElement("span");
+    valueEl.className = `chart-detail-value ${options.valueClassName || ""}`.trim();
+    valueEl.textContent = value;
+    row.appendChild(valueEl);
+
+    if (options.metaText) {
+        const metaEl = document.createElement("span");
+        metaEl.className = `chart-detail-meta ${options.metaClassName || ""}`.trim();
+        metaEl.textContent = options.metaText;
+        row.appendChild(metaEl);
+    }
+
+    return row;
+}
+
+function getGoalNumericValue(eventName, goalMark) {
+    if (!goalMark) {
+        return null;
+    }
+
+    const isRunning = RUNNING_EVENTS.has(eventName);
+    const numericValue = isRunning ? parseTime(goalMark) : parseDistance(goalMark);
+    return Number.isFinite(numericValue) ? numericValue : null;
+}
+
+function buildChartTargets(eventName, chartConfig = {}) {
+    const targets = [];
+    const divisionEventTargets = chartConfig.divisionGroup?.events?.[eventName];
+
+    if (divisionEventTargets && typeof divisionEventTargets === "object") {
+        ["prelim_qualifying", "finals_qualifying", "winner"].forEach((key) => {
+            const mark = divisionEventTargets[key];
+            const numericValue = getGoalNumericValue(eventName, mark);
+            if (!mark || numericValue === null) {
+                return;
+            }
+
+            targets.push({
+                key,
+                mark,
+                numericValue,
+                ...TARGET_LINE_STYLES[key],
+            });
+        });
+    }
+
+    if (targets.length === 0) {
+        const customGoalMark = chartConfig.customGoals?.[eventName];
+        const numericValue = getGoalNumericValue(eventName, customGoalMark);
+        if (customGoalMark && numericValue !== null) {
+            targets.push({
+                key: "custom_goal",
+                mark: customGoalMark,
+                numericValue,
+                ...TARGET_LINE_STYLES.custom_goal,
+            });
+        }
+    }
+
+    return targets;
 }
 
 function collectEventHistory(athlete) {
@@ -143,7 +263,7 @@ const CHART_COLORS = {
     declineRed: "#6c4c2f",
 };
 
-function renderAthleteCharts(athlete, container) {
+function renderAthleteCharts(athlete, container, chartConfig = {}) {
     const history = collectEventHistory(athlete);
     const chartableEvents = Object.entries(history).filter(([, entries]) => entries.length >= 2);
 
@@ -165,11 +285,13 @@ function renderAthleteCharts(athlete, container) {
     chartableEvents.forEach(([eventName, entries]) => {
         const isRunning = RUNNING_EVENTS.has(eventName);
         const theme = getEventTheme(eventName);
+        const targets = buildChartTargets(eventName, chartConfig);
         const chartWrapper = document.createElement("div");
         chartWrapper.className = "chart-wrapper";
 
         const last = entries[entries.length - 1].numericValue;
         const previous = entries[entries.length - 2].numericValue;
+        const best = isRunning ? Math.min(...entries.map((entry) => entry.numericValue)) : Math.max(...entries.map((entry) => entry.numericValue));
         const improved = isRunning ? last < previous : last > previous;
         const same = previous === last;
 
@@ -195,14 +317,20 @@ function renderAthleteCharts(athlete, container) {
 
         if (!same) {
             const directionLabel = improved
-                ? (isRunning ? `Faster by ${formatDelta(last - previous, true)} over last mark` : `Up ${formatDelta(last - previous, false)} over last mark`)
-                : (isRunning ? `Slower by ${formatDelta(last - previous, true)} over last mark` : `Down ${formatDelta(last - previous, false)} over last mark`);
-            chartMeta.appendChild(createInfoPill(directionLabel, `trend-chip ${theme.chip} ${improved ? "trend-chip--up" : "trend-chip--down"}`));
+                ? (isRunning ? `Faster by ${formatDelta(last - previous, true)}` : `Up ${formatDelta(last - previous, false)}`)
+                : (isRunning ? `Slower by ${formatDelta(last - previous, true)}` : `Down ${formatDelta(last - previous, false)}`);
+            const trendNote = document.createElement("div");
+            trendNote.className = `chart-trend-note ${improved ? "chart-trend-note--up" : "chart-trend-note--down"}`;
+            trendNote.textContent = directionLabel;
+            titleGroup.appendChild(trendNote);
         }
 
         chartHeader.appendChild(titleGroup);
         chartHeader.appendChild(chartMeta);
         chartWrapper.appendChild(chartHeader);
+
+        const chartBody = document.createElement("div");
+        chartBody.className = "chart-body";
 
         const canvasShell = document.createElement("div");
         canvasShell.className = "chart-canvas-shell";
@@ -210,31 +338,67 @@ function renderAthleteCharts(athlete, container) {
         const canvas = document.createElement("canvas");
         canvas.height = 220;
         canvasShell.appendChild(canvas);
-        chartWrapper.appendChild(canvasShell);
+        chartBody.appendChild(canvasShell);
+
+        const chartDetails = chartConfig.divisionGroup?.label
+            ? document.createElement("aside")
+            : null;
+        const targetRows = new Map();
+
+        if (chartDetails) {
+            chartDetails.className = "chart-details";
+            chartDetails.appendChild(createDetailRow("Division", chartConfig.divisionGroup.label));
+            chartBody.appendChild(chartDetails);
+        }
+
+        chartWrapper.appendChild(chartBody);
         chartsSection.appendChild(chartWrapper);
 
         const values = entries.map((e) => e.numericValue);
+        const getPadding = (localMin, localMax) => {
+            const localRange = localMax - localMin;
+            return localRange > 0 ? localRange * 0.3 : (Math.abs(localMin) * 0.05 || 1);
+        };
         const minVal = Math.min(...values);
         const maxVal = Math.max(...values);
-        const range = maxVal - minVal;
-        const padding = range > 0 ? range * 0.3 : (Math.abs(minVal) * 0.05 || 1);
+        const padding = getPadding(minVal, maxVal);
         const gradient = canvas.getContext("2d").createLinearGradient(0, 0, 0, canvas.height);
         gradient.addColorStop(0, theme.fillTop);
         gradient.addColorStop(1, theme.fillBottom);
 
-        new Chart(canvas, {
+        const chart = new Chart(canvas, {
             type: "line",
             data: {
                 labels: entries.map((e) => e.label),
                 datasets: [
                     {
-                        data: entries.map((e) => e.numericValue),
+                        label: "Performance",
+                        data: values,
                         borderColor: theme.line,
                         backgroundColor: gradient,
-                        pointBackgroundColor: theme.line,
+                        pointBackgroundColor: function (context) {
+                            const activeTargetValue = context.chart.data.datasets[0].activeTargetValue;
+                            if (!Number.isFinite(activeTargetValue)) {
+                                return theme.line;
+                            }
+
+                            const pointValue = context.raw;
+                            const comparison = compareToTarget(pointValue, activeTargetValue, isRunning);
+                            if (comparison === "positive") {
+                                return CHART_COLORS.improvementGreen;
+                            }
+                            if (comparison === "negative") {
+                                return CHART_COLORS.declineRed;
+                            }
+                            return theme.line;
+                        },
                         pointBorderColor: CHART_COLORS.pointBorder,
                         pointBorderWidth: 2,
                         pointRadius: function (context) {
+                            const activeTargetValue = context.chart.data.datasets[0].activeTargetValue;
+                            if (Number.isFinite(activeTargetValue)) {
+                                return context.dataIndex === entries.length - 1 ? 4 : 3;
+                            }
                             return context.dataIndex === entries.length - 1 ? 4 : 0;
                         },
                         pointHoverRadius: 6,
@@ -244,6 +408,38 @@ function renderAthleteCharts(athlete, container) {
                         cubicInterpolationMode: "monotone",
                         fill: true,
                         spanGaps: true,
+                        activeTargetValue: null,
+                        segment: {
+                            borderColor: function (context) {
+                                const activeTargetValue = context.chart.data.datasets[0].activeTargetValue;
+                                if (!Number.isFinite(activeTargetValue)) {
+                                    return theme.line;
+                                }
+
+                                const comparison = compareToTarget(context.p1.parsed.y, activeTargetValue, isRunning);
+                                if (comparison === "positive") {
+                                    return CHART_COLORS.improvementGreen;
+                                }
+                                if (comparison === "negative") {
+                                    return CHART_COLORS.declineRed;
+                                }
+                                return theme.line;
+                            },
+                        },
+                    },
+                    {
+                        label: "Selected Target",
+                        targetLabel: "",
+                        targetMark: "",
+                        data: [],
+                        borderColor: "transparent",
+                        borderDash: [8, 6],
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHoverRadius: 0,
+                        pointHitRadius: 0,
+                        fill: false,
+                        tension: 0,
                     },
                 ],
             },
@@ -271,9 +467,15 @@ function renderAthleteCharts(athlete, container) {
                                 return entries[idx].meetName;
                             },
                             label: function (item) {
+                                if (item.dataset.label === "Selected Target") {
+                                    return `${item.dataset.targetLabel} ${item.dataset.targetMark}`;
+                                }
                                 return `Mark ${entries[item.dataIndex].rawValue}`;
                             },
                             afterLabel: function (item) {
+                                if (item.dataset.label === "Selected Target") {
+                                    return isRunning ? "Benchmark time" : "Benchmark distance";
+                                }
                                 const point = entries[item.dataIndex];
                                 return `Date ${formatMeetDate(point.date)}`;
                             },
@@ -311,7 +513,6 @@ function renderAthleteCharts(athlete, container) {
                         },
                         grid: {
                             color: CHART_COLORS.grid,
-                            borderDash: [4, 5],
                             drawTicks: false,
                         },
                         ticks: {
@@ -327,6 +528,76 @@ function renderAthleteCharts(athlete, container) {
                 },
             },
         });
+
+        const performanceDataset = chart.data.datasets[0];
+        const targetDataset = chart.data.datasets[1];
+        let activeTargetKey = null;
+
+        function applyScaleRange(selectedTarget = null) {
+            const scaleValues = selectedTarget ? [...values, selectedTarget.numericValue] : values;
+            const localMin = Math.min(...scaleValues);
+            const localMax = Math.max(...scaleValues);
+            const localPadding = getPadding(localMin, localMax);
+            chart.options.scales.y.min = localMin - localPadding;
+            chart.options.scales.y.max = localMax + localPadding;
+        }
+
+        function syncTargetRowState() {
+            targetRows.forEach((row, key) => {
+                row.classList.toggle("chart-detail-row--active", key === activeTargetKey);
+            });
+        }
+
+        function setActiveTarget(target = null) {
+            if (!target) {
+                activeTargetKey = null;
+                performanceDataset.activeTargetValue = null;
+                targetDataset.targetLabel = "";
+                targetDataset.targetMark = "";
+                targetDataset.data = [];
+                targetDataset.borderColor = "transparent";
+                applyScaleRange(null);
+                syncTargetRowState();
+                chart.update();
+                return;
+            }
+
+            activeTargetKey = target.key;
+            performanceDataset.activeTargetValue = target.numericValue;
+            targetDataset.targetLabel = target.label;
+            targetDataset.targetMark = target.mark;
+            targetDataset.data = entries.map(() => target.numericValue);
+            targetDataset.borderColor = compareToTarget(last, target.numericValue, isRunning) === "positive"
+                ? CHART_COLORS.improvementGreen
+                : CHART_COLORS.declineRed;
+            targetDataset.borderDash = target.dash;
+            applyScaleRange(target);
+            syncTargetRowState();
+            chart.update();
+        }
+
+        if (chartDetails) {
+            targets.forEach((target) => {
+                const comparison = compareToTarget(best, target.numericValue, isRunning);
+                const gapText = comparison === "neutral"
+                    ? "At target"
+                    : `Gap ${formatDelta(best - target.numericValue, isRunning)}`;
+                const targetRow = createDetailRow(target.label, target.mark, {
+                    clickable: true,
+                    metaText: gapText,
+                    metaClassName: comparison === "positive"
+                        ? "chart-detail-meta--positive"
+                        : comparison === "negative"
+                            ? "chart-detail-meta--negative"
+                            : "chart-detail-meta--neutral",
+                });
+                targetRow.addEventListener("click", () => {
+                    setActiveTarget(activeTargetKey === target.key ? null : target);
+                });
+                targetRows.set(target.key, targetRow);
+                chartDetails.appendChild(targetRow);
+            });
+        }
     });
 
     container.appendChild(chartsSection);
