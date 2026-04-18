@@ -44,7 +44,7 @@ def fetch_raw_results_text():
 
 
 def normalize_sections(text):
-    lines = [line.rstrip() for line in text.splitlines()]
+    lines = [re.sub(r"<[^>]+>", "", line).rstrip() for line in text.splitlines()]
     sections = []
     index = 0
 

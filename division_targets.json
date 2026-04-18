@@ -2,7 +2,7 @@
   "source": {
     "meet": "CYO-LA Finals 2025",
     "source_url": "https://ca.milesplit.com/meets/687874-cyo-la-finals-2025/results/1168890/raw",
-    "generated_on": "2026-04-17",
+    "generated_on": "2026-04-18",
     "notes": [
       "Prelim Qualifying is the last listed mark in the prelim results.",
       "Finals Qualifying is the prelim mark at the same rank as the size of the finals field.",
@@ -10,6 +10,51 @@
     ]
   },
   "groups": {
+    "division-b-boys": {
+      "label": "Division B Boys",
+      "events": {
+        "LJ": {
+          "prelim_qualifying": "9-1.50",
+          "finals_qualifying": "11-10",
+          "winner": "15-6.50"
+        },
+        "SP": {
+          "prelim_qualifying": "11-10",
+          "finals_qualifying": "24-11",
+          "winner": "30-5.50"
+        },
+        "JV": {
+          "prelim_qualifying": "41-5",
+          "finals_qualifying": "83-0",
+          "winner": "103-11"
+        },
+        "1600M": {
+          "prelim_qualifying": "8:00.32",
+          "finals_qualifying": "6:05.04",
+          "winner": "5:13.94"
+        },
+        "400M": {
+          "prelim_qualifying": "1:27.75",
+          "finals_qualifying": "1:11.74",
+          "winner": "1:03.41"
+        },
+        "100M": {
+          "prelim_qualifying": "17.20",
+          "finals_qualifying": "14.44",
+          "winner": "13.33"
+        },
+        "800M": {
+          "prelim_qualifying": "3:22.62",
+          "finals_qualifying": "2:50.26",
+          "winner": "2:35.40"
+        },
+        "200M": {
+          "prelim_qualifying": "35.44",
+          "finals_qualifying": "31.24",
+          "winner": "28.01"
+        }
+      }
+    },
     "division-b-girls": {
       "label": "Division B Girls",
       "events": {
@@ -52,46 +97,6 @@
           "prelim_qualifying": "38.35",
           "finals_qualifying": "30.55",
           "winner": "28.63"
-        }
-      }
-    },
-    "division-b-boys": {
-      "label": "Division B Boys",
-      "events": {
-        "SP": {
-          "prelim_qualifying": "11-10",
-          "finals_qualifying": "24-11",
-          "winner": "30-5.50"
-        },
-        "JV": {
-          "prelim_qualifying": "41-5",
-          "finals_qualifying": "83-0",
-          "winner": "103-11"
-        },
-        "1600M": {
-          "prelim_qualifying": "8:00.32",
-          "finals_qualifying": "6:05.04",
-          "winner": "5:13.94"
-        },
-        "400M": {
-          "prelim_qualifying": "1:27.75",
-          "finals_qualifying": "1:11.74",
-          "winner": "1:03.41"
-        },
-        "100M": {
-          "prelim_qualifying": "17.20",
-          "finals_qualifying": "14.44",
-          "winner": "13.33"
-        },
-        "800M": {
-          "prelim_qualifying": "3:22.62",
-          "finals_qualifying": "2:50.26",
-          "winner": "2:35.40"
-        },
-        "200M": {
-          "prelim_qualifying": "35.44",
-          "finals_qualifying": "31.24",
-          "winner": "28.01"
         }
       }
     },
