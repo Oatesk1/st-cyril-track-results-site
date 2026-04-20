@@ -9,7 +9,7 @@ let storedDivisionAssignments = {};
 let currentQuery = "";
 
 const DIVISION_ASSIGNMENTS_STORAGE_KEY = "athleteDivisionAssignments";
-const RUNNING_EVENTS = new Set(["100M", "200M", "400M", "800M", "1600M"]);
+const DISPLAY_RUNNING_EVENTS = new Set(["100M", "200M", "400M", "800M", "1600M"]);
 
 function formatRunningMark(mark) {
     if (typeof mark !== "string") {
@@ -37,7 +37,7 @@ function formatRunningMark(mark) {
 }
 
 function formatMarkForDisplay(eventName, mark) {
-    if (RUNNING_EVENTS.has(eventName)) {
+    if (DISPLAY_RUNNING_EVENTS.has(eventName)) {
         return formatRunningMark(mark);
     }
 
