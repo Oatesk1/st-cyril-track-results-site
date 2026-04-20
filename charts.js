@@ -60,8 +60,8 @@ const TARGET_LINE_STYLES = {
 function parseTime(str) {
     if (!str) return null;
     const parts = str.split(":");
-    if (parts.length === 2) {
-        return parseFloat(parts[0]) * 60 + parseFloat(parts[1]);
+    if (parts.length > 1) {
+        return parts.reduce((total, part) => total * 60 + parseFloat(part), 0);
     }
     return parseFloat(str);
 }

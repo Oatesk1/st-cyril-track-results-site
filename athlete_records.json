@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-19T17:59:05",
+  "generated_at": "2026-04-19T18:44:54",
   "team": "St. Cyril of Jerusalem",
-  "latest_meet_date": "4/12/2026",
+  "latest_meet_date": "4/19/2026",
   "events": [
     "100M",
     "200M",
@@ -20,7 +20,7 @@
       "personal_records": {
         "100M": "19.03",
         "200M": "42.23",
-        "400M": "1:34.99",
+        "400M": "1:32.20",
         "JV": "20-03",
         "LJ": "5-08.00"
       },
@@ -28,6 +28,16 @@
         "400M"
       ],
       "results": [
+        {
+          "meet_date": "4/19/2026",
+          "meet_name": "Meet 4 Fiya Culver City High School April 19 2026",
+          "source_file": "Meet 4 FIYA Culver City High School April 19 2026.xlsx",
+          "events": {
+            "100M": "19.38",
+            "400M": "1:32.20"
+          },
+          "is_latest_meet": true
+        },
         {
           "meet_date": "4/12/2026",
           "meet_name": "Fiya Meet 3 April 12 2026 Culver City High School",
@@ -37,7 +47,7 @@
             "400M": "1:34.99",
             "JV": "17-04.00"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/28/2026",
@@ -79,7 +89,7 @@
       "name": "Chretin, Nicolas",
       "search_name": "chretin, nicolas",
       "personal_records": {
-        "100M": "13.83",
+        "100M": "13.67",
         "200M": "28.69",
         "400M": "1:08.77",
         "JV": "46-02",
@@ -87,12 +97,20 @@
         "LJ": "10-03.00"
       },
       "pr_from_latest_meet": [
-        "100M",
-        "200M",
-        "400M",
-        "SP"
+        "100M"
       ],
       "results": [
+        {
+          "meet_date": "4/19/2026",
+          "meet_name": "Meet 4 Fiya Culver City High School April 19 2026",
+          "source_file": "Meet 4 FIYA Culver City High School April 19 2026.xlsx",
+          "events": {
+            "100M": "13.67",
+            "200M": "29.25",
+            "SP": "31-01.00"
+          },
+          "is_latest_meet": true
+        },
         {
           "meet_date": "4/12/2026",
           "meet_name": "Fiya Meet 3 April 12 2026 Culver City High School",
@@ -103,7 +121,7 @@
             "400M": "1:08.77",
             "SP": "33-01.00"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/22/2026",
@@ -158,10 +176,25 @@
       "search_name": "layke, jamison",
       "personal_records": {
         "100M": "17.31",
-        "400M": "1:28.68"
+        "400M": "1:25.80",
+        "JV": "31-09.00"
       },
-      "pr_from_latest_meet": [],
+      "pr_from_latest_meet": [
+        "400M",
+        "JV"
+      ],
       "results": [
+        {
+          "meet_date": "4/19/2026",
+          "meet_name": "Meet 4 Fiya Culver City High School April 19 2026",
+          "source_file": "Meet 4 FIYA Culver City High School April 19 2026.xlsx",
+          "events": {
+            "100M": "17.39",
+            "400M": "1:25.80",
+            "JV": "31-09.00"
+          },
+          "is_latest_meet": true
+        },
         {
           "meet_date": "3/28/2026",
           "meet_name": "Red Raider Relays March 28, 2026",
@@ -197,6 +230,31 @@
       ]
     },
     {
+      "id": "layke-violet",
+      "name": "Layke, Violet",
+      "search_name": "layke, violet",
+      "personal_records": {
+        "100M": "20.11",
+        "JV": "11-00.00"
+      },
+      "pr_from_latest_meet": [
+        "100M",
+        "JV"
+      ],
+      "results": [
+        {
+          "meet_date": "4/19/2026",
+          "meet_name": "Meet 4 Fiya Culver City High School April 19 2026",
+          "source_file": "Meet 4 FIYA Culver City High School April 19 2026.xlsx",
+          "events": {
+            "100M": "20.11",
+            "JV": "11-00.00"
+          },
+          "is_latest_meet": true
+        }
+      ]
+    },
+    {
       "id": "leung-nolan",
       "name": "Leung, Nolan",
       "search_name": "leung, nolan",
@@ -217,7 +275,7 @@
             "200M": "35.54",
             "400M": "1:20.36"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/28/2026",
@@ -346,18 +404,29 @@
       "search_name": "oates, caroline",
       "personal_records": {
         "100M": "16.79",
-        "200M": "35.58",
+        "200M": "35.56",
         "400M": "1:23.14",
         "800M": "3:15.25",
+        "1600M": "6:49.01",
         "JV": "13-06",
         "LJ": "10-00.00"
       },
       "pr_from_latest_meet": [
-        "100M",
-        "400M",
-        "800M"
+        "200M",
+        "1600M"
       ],
       "results": [
+        {
+          "meet_date": "4/19/2026",
+          "meet_name": "Meet 4 Fiya Culver City High School April 19 2026",
+          "source_file": "Meet 4 FIYA Culver City High School April 19 2026.xlsx",
+          "events": {
+            "200M": "35.56",
+            "1600M": "6:49.01",
+            "LJ": "9-07.00"
+          },
+          "is_latest_meet": true
+        },
         {
           "meet_date": "4/12/2026",
           "meet_name": "Fiya Meet 3 April 12 2026 Culver City High School",
@@ -368,7 +437,7 @@
             "800M": "3:15.25",
             "LJ": "9-04.00"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/28/2026",
@@ -415,10 +484,7 @@
         "100M": "20.48",
         "JV": "11-02.00"
       },
-      "pr_from_latest_meet": [
-        "100M",
-        "JV"
-      ],
+      "pr_from_latest_meet": [],
       "results": [
         {
           "meet_date": "4/12/2026",
@@ -428,7 +494,7 @@
             "100M": "20.48",
             "JV": "11-02.00"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         }
       ]
     },
@@ -441,12 +507,17 @@
         "400M": "1:40.50",
         "JV": "12-06.00"
       },
-      "pr_from_latest_meet": [
-        "100M",
-        "400M",
-        "JV"
-      ],
+      "pr_from_latest_meet": [],
       "results": [
+        {
+          "meet_date": "4/19/2026",
+          "meet_name": "Meet 4 Fiya Culver City High School April 19 2026",
+          "source_file": "Meet 4 FIYA Culver City High School April 19 2026.xlsx",
+          "events": {
+            "400M": "1:40.80"
+          },
+          "is_latest_meet": true
+        },
         {
           "meet_date": "4/12/2026",
           "meet_name": "Fiya Meet 3 April 12 2026 Culver City High School",
@@ -456,7 +527,7 @@
             "400M": "1:40.50",
             "JV": "12-06.00"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/28/2026",
@@ -485,12 +556,27 @@
       "personal_records": {
         "100M": "15.62",
         "200M": "31.80",
-        "JV": "76-03",
-        "SP": "24-05.00",
+        "JV": "78-03.00",
+        "SP": "26-01.00",
         "LJ": "11-02.00"
       },
-      "pr_from_latest_meet": [],
+      "pr_from_latest_meet": [
+        "JV",
+        "SP"
+      ],
       "results": [
+        {
+          "meet_date": "4/19/2026",
+          "meet_name": "Meet 4 Fiya Culver City High School April 19 2026",
+          "source_file": "Meet 4 FIYA Culver City High School April 19 2026.xlsx",
+          "events": {
+            "100M": "15.84",
+            "JV": "78-03.00",
+            "SP": "26-01.00",
+            "LJ": "10-03.00"
+          },
+          "is_latest_meet": true
+        },
         {
           "meet_date": "3/28/2026",
           "meet_name": "Red Raider Relays March 28, 2026",
@@ -554,6 +640,18 @@
       "pr_from_latest_meet": [],
       "results": [
         {
+          "meet_date": "4/19/2026",
+          "meet_name": "Meet 4 Fiya Culver City High School April 19 2026",
+          "source_file": "Meet 4 FIYA Culver City High School April 19 2026.xlsx",
+          "events": {
+            "100M": "18.47",
+            "200M": "40.94",
+            "JV": "26-09.00",
+            "LJ": "7-00.00"
+          },
+          "is_latest_meet": true
+        },
+        {
           "meet_date": "3/28/2026",
           "meet_name": "Red Raider Relays March 28, 2026",
           "source_file": "2026 Raider Relay Results.htm",
@@ -593,10 +691,24 @@
       "name": "Prado, Malania",
       "search_name": "prado, malania",
       "personal_records": {
-        "JV": "9-10.00"
+        "100M": "19.81",
+        "JV": "17-00.00"
       },
-      "pr_from_latest_meet": [],
+      "pr_from_latest_meet": [
+        "100M",
+        "JV"
+      ],
       "results": [
+        {
+          "meet_date": "4/19/2026",
+          "meet_name": "Meet 4 Fiya Culver City High School April 19 2026",
+          "source_file": "Meet 4 FIYA Culver City High School April 19 2026.xlsx",
+          "events": {
+            "100M": "19.81",
+            "JV": "17-00.00"
+          },
+          "is_latest_meet": true
+        },
         {
           "meet_date": "3/22/2026",
           "meet_name": "FIYA-Malibu March 22, 2026",
@@ -649,11 +761,24 @@
         "100M": "18.16",
         "200M": "41.46",
         "400M": "1:31.03",
-        "JV": "16-00.00",
+        "JV": "27-00.00",
         "LJ": "6-03.00"
       },
-      "pr_from_latest_meet": [],
+      "pr_from_latest_meet": [
+        "JV"
+      ],
       "results": [
+        {
+          "meet_date": "4/19/2026",
+          "meet_name": "Meet 4 Fiya Culver City High School April 19 2026",
+          "source_file": "Meet 4 FIYA Culver City High School April 19 2026.xlsx",
+          "events": {
+            "100M": "18.51",
+            "400M": "1:36.20",
+            "JV": "27-00.00"
+          },
+          "is_latest_meet": true
+        },
         {
           "meet_date": "3/28/2026",
           "meet_name": "Red Raider Relays March 28, 2026",
@@ -726,9 +851,7 @@
         "400M": "1:12.66",
         "JV": "42-02"
       },
-      "pr_from_latest_meet": [
-        "400M"
-      ],
+      "pr_from_latest_meet": [],
       "results": [
         {
           "meet_date": "4/12/2026",
@@ -739,7 +862,7 @@
             "200M": "30.70",
             "400M": "1:12.66"
           },
-          "is_latest_meet": true
+          "is_latest_meet": false
         },
         {
           "meet_date": "3/22/2026",

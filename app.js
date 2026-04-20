@@ -9,6 +9,40 @@ let storedDivisionAssignments = {};
 let currentQuery = "";
 
 const DIVISION_ASSIGNMENTS_STORAGE_KEY = "athleteDivisionAssignments";
+const RUNNING_EVENTS = new Set(["100M", "200M", "400M", "800M", "1600M"]);
+
+function formatRunningMark(mark) {
+    if (typeof mark !== "string") {
+        return mark;
+    }
+
+    const parts = mark.split(":");
+    if (parts.length !== 3) {
+        return mark;
+    }
+
+    const hours = Number(parts[0]);
+    const minutes = Number(parts[1]);
+    const seconds = Number(parts[2]);
+    if (![hours, minutes, seconds].every(Number.isFinite)) {
+        return mark;
+    }
+
+    const totalMinutes = hours * 60 + minutes;
+    if (totalMinutes > 0) {
+        return `${totalMinutes}:${seconds.toFixed(2).padStart(5, "0")}`;
+    }
+
+    return seconds.toFixed(2);
+}
+
+function formatMarkForDisplay(eventName, mark) {
+    if (RUNNING_EVENTS.has(eventName)) {
+        return formatRunningMark(mark);
+    }
+
+    return mark;
+}
 
 function normalizeGoalMap(data) {
     if (!data || typeof data !== "object") {
@@ -176,6 +210,7 @@ function renderPersonalRecordsGrid(records, isPrFromLatestMeet = []) {
     grid.className = "pr-grid";
 
     Object.entries(records).forEach(([eventName, mark]) => {
+        const displayMark = formatMarkForDisplay(eventName, mark);
         const item = document.createElement("div");
         item.className = "pr-item";
 
@@ -189,7 +224,7 @@ function renderPersonalRecordsGrid(records, isPrFromLatestMeet = []) {
 
         const valueEl = document.createElement("span");
         valueEl.className = "pr-value";
-        valueEl.textContent = mark;
+        valueEl.textContent = displayMark;
         valueWrap.appendChild(valueEl);
 
         if (isPrFromLatestMeet.includes(eventName)) {
@@ -211,10 +246,11 @@ function renderEventList(events, isPrFromLatestMeet = []) {
     list.className = "record-list";
 
     Object.entries(events).forEach(([eventName, mark]) => {
+        const displayMark = formatMarkForDisplay(eventName, mark);
         const item = document.createElement("li");
         const isFromLatestMeet = isPrFromLatestMeet.includes(eventName);
         const asterisk = isFromLatestMeet ? '*' : '';
-        item.textContent = `${eventName} - ${mark}${asterisk}`;
+        item.textContent = `${eventName} - ${displayMark}${asterisk}`;
         list.appendChild(item);
     });
 
