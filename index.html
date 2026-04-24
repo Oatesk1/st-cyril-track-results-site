@@ -11,17 +11,31 @@
 <body>
     <main class="container">
         <h1>Athlete Records</h1>
-        <p class="subtitle">Search by athlete name to view records.</p>
+        <p class="subtitle">Search by athlete name to view records, or switch to regional qualifier rankings.</p>
 
-        <section class="search-card" aria-label="Athlete search">
-            <label for="nameSearch">Athlete name</label>
-            <input id="nameSearch" type="text" placeholder="Type a name, for example: Ava" autocomplete="off" />
+        <nav class="mode-switch" aria-label="View mode">
+            <button id="modeAthletes" class="mode-button mode-button--active" type="button">Athlete Records</button>
+            <button id="modeQualifiers" class="mode-button" type="button">Regional Qualifiers</button>
+        </nav>
+
+        <section id="athleteRecordsView">
+            <section class="search-card" aria-label="Athlete search">
+                <label for="nameSearch">Athlete name</label>
+                <input id="nameSearch" type="text" placeholder="Type a name, for example: Ava" autocomplete="off" />
+            </section>
+
+            <section>
+                <h2>Results</h2>
+                <p id="statusText" class="status">Loading athletes from JSON...</p>
+                <div id="results"></div>
+            </section>
         </section>
 
-        <section>
-            <h2>Results</h2>
-            <p id="statusText" class="status">Loading athletes from JSON...</p>
-            <div id="results"></div>
+        <section id="regionalQualifiersView" class="regional-view regional-view--hidden" aria-live="polite">
+            <h2>Top 16 Qualifiers To-Date</h2>
+            <p id="qualifierStatusText" class="status">Loading regional qualifier data...</p>
+            <div id="qualifierEventTabs" class="event-tabs" role="tablist" aria-label="Regional events"></div>
+            <div id="qualifierResults"></div>
         </section>
     </main>
 

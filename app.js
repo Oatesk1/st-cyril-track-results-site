@@ -1,15 +1,389 @@
 const searchInput = document.getElementById("nameSearch");
 const resultsEl = document.getElementById("results");
 const statusTextEl = document.getElementById("statusText");
+const modeAthletesBtn = document.getElementById("modeAthletes");
+const modeQualifiersBtn = document.getElementById("modeQualifiers");
+const athleteRecordsViewEl = document.getElementById("athleteRecordsView");
+const regionalQualifiersViewEl = document.getElementById("regionalQualifiersView");
+const qualifierStatusTextEl = document.getElementById("qualifierStatusText");
+const qualifierEventTabsEl = document.getElementById("qualifierEventTabs");
+const qualifierResultsEl = document.getElementById("qualifierResults");
 let athletes = [];
 let athleteGoals = {};
 let divisionTargets = {};
 let athleteDivisionAssignments = {};
 let storedDivisionAssignments = {};
+let regionalQualifierData = null;
+let activeQualifierEvent = "";
 let currentQuery = "";
 
 const DIVISION_ASSIGNMENTS_STORAGE_KEY = "athleteDivisionAssignments";
 const DISPLAY_RUNNING_EVENTS = new Set(["100M", "200M", "400M", "800M", "1600M"]);
+const DEFAULT_EVENT_ORDER = ["100M", "200M", "400M", "800M", "1600M", "JV", "SP", "LJ"];
+const QUALIFIER_EVENT_ORDER = ["100M", "200M", "400M", "800M", "1600M", "Javelin", "Shot Put", "Long Jump"];
+
+function setActiveMode(mode) {
+    const showAthletes = mode === "athletes";
+
+    athleteRecordsViewEl.classList.toggle("regional-view--hidden", !showAthletes);
+    regionalQualifiersViewEl.classList.toggle("regional-view--hidden", showAthletes);
+    modeAthletesBtn.classList.toggle("mode-button--active", showAthletes);
+    modeQualifiersBtn.classList.toggle("mode-button--active", !showAthletes);
+}
+
+function parseRunningValue(mark) {
+    if (typeof mark !== "string") {
+        return Number.NaN;
+    }
+
+    const parts = mark.split(":").map((part) => Number(part));
+    if (parts.some((value) => !Number.isFinite(value))) {
+        return Number.NaN;
+    }
+
+    if (parts.length === 1) {
+        return parts[0];
+    }
+
+    return parts.reduce((total, current) => total * 60 + current, 0);
+}
+
+function parseFieldValue(mark) {
+    if (typeof mark !== "string") {
+        return Number.NaN;
+    }
+
+    if (!mark.includes("-")) {
+        const asFeet = Number(mark);
+        return Number.isFinite(asFeet) ? asFeet * 12 : Number.NaN;
+    }
+
+    const [feet, inches] = mark.split("-").map((value) => Number(value));
+    if (![feet, inches].every(Number.isFinite)) {
+        return Number.NaN;
+    }
+
+    return feet * 12 + inches;
+}
+
+function getRegionalLabel(sourceValue) {
+    const source = (sourceValue || "").toLowerCase();
+
+    if (source.includes("st-paul") || source.includes("st paul")) {
+        return "St. Paul";
+    }
+
+    if (source.includes("st-anthony") || source.includes("st anthony")) {
+        return "St. Anthony";
+    }
+
+    if (source.includes("regionals-2") || source.includes("regional 2")) {
+        return "St. Paul";
+    }
+
+    if (source.includes("regionals-1") || source.includes("regional 1")) {
+        return "St. Anthony";
+    }
+
+    return "Regional";
+}
+
+function inferQualifierEventType(eventName, sampleMark = "") {
+    const name = (eventName || "").toLowerCase();
+    const mark = (sampleMark || "").toLowerCase();
+
+    if (DISPLAY_RUNNING_EVENTS.has(eventName)) {
+        return "running";
+    }
+
+    // Full-title regional event names (for example: "Girls 100 Meter Dash (B)").
+    if (
+        name.includes("dash")
+        || name.includes("meter")
+        || name.includes("run")
+        || name.includes("relay")
+    ) {
+        return "running";
+    }
+
+    if (
+        name.includes("long jump")
+        || name.includes("shot put")
+        || name.includes("javelin")
+        || name.includes("high jump")
+    ) {
+        return "field";
+    }
+
+    // Mark-shape fallback: feet-inches usually indicates field marks.
+    if (mark.includes("-")) {
+        return "field";
+    }
+
+    return "running";
+}
+
+function parseRegionalEventMeta(eventName) {
+    const name = (eventName || "").toLowerCase();
+
+    const gender = name.includes("girls") ? "Girls" : name.includes("boys") ? "Boys" : "";
+    const divisionMatch = name.match(/\((a|b)\)/i);
+    const division = divisionMatch ? divisionMatch[1].toUpperCase() : "";
+
+    let normalizedEvent = "";
+    if (name.includes("100 meter")) normalizedEvent = "100M";
+    else if (name.includes("200 meter")) normalizedEvent = "200M";
+    else if (name.includes("400 meter")) normalizedEvent = "400M";
+    else if (name.includes("800 meter")) normalizedEvent = "800M";
+    else if (name.includes("1600 meter")) normalizedEvent = "1600M";
+    else if (name.includes("javelin")) normalizedEvent = "Javelin";
+    else if (name.includes("shot put")) normalizedEvent = "Shot Put";
+    else if (name.includes("long jump")) normalizedEvent = "Long Jump";
+
+    return {
+        gender,
+        division,
+        normalizedEvent,
+    };
+}
+
+function getQualifierStructuredEvents(eventsMap) {
+    const allEventNames = Object.keys(eventsMap);
+    const desiredOrder = [];
+    const groupKeys = [
+        "B|Girls",
+        "B|Boys",
+        "A|Girls",
+        "A|Boys",
+    ];
+
+    groupKeys.forEach((groupKey) => {
+        const [division, gender] = groupKey.split("|");
+
+        QUALIFIER_EVENT_ORDER.forEach((normalizedEvent) => {
+            const match = allEventNames.find((eventName) => {
+                const meta = parseRegionalEventMeta(eventName);
+                return meta.division === division && meta.gender === gender && meta.normalizedEvent === normalizedEvent;
+            });
+
+            if (match && !desiredOrder.includes(match)) {
+                desiredOrder.push(match);
+            }
+        });
+    });
+
+    const leftovers = allEventNames.filter((eventName) => !desiredOrder.includes(eventName));
+    return {
+        orderedEventNames: [...desiredOrder, ...leftovers],
+        leftovers,
+    };
+}
+
+function normalizeRegionalQualifierData(data) {
+    if (!data || typeof data !== "object") {
+        return null;
+    }
+
+    const eventsSource = data.events && typeof data.events === "object"
+        ? data.events
+        : data.qualifiers && typeof data.qualifiers === "object"
+            ? data.qualifiers
+            : null;
+
+    if (!eventsSource) {
+        return null;
+    }
+
+    const normalizedEvents = {};
+
+    Object.entries(eventsSource).forEach(([eventName, entries]) => {
+        if (!Array.isArray(entries)) {
+            return;
+        }
+
+        const firstMark = entries.find((entry) => entry && (entry.mark || entry.result || entry.time || entry.distance))
+            ?.mark
+            || entries.find((entry) => entry && (entry.mark || entry.result || entry.time || entry.distance))
+                ?.result
+            || entries.find((entry) => entry && (entry.mark || entry.result || entry.time || entry.distance))
+                ?.time
+            || entries.find((entry) => entry && (entry.mark || entry.result || entry.time || entry.distance))
+                ?.distance
+            || "";
+        const eventType = inferQualifierEventType(eventName, firstMark);
+        const isRunningEvent = eventType === "running";
+        const sorted = entries
+            .map((entry) => {
+                const mark = entry.mark || entry.result || entry.time || entry.distance || "";
+                const score = isRunningEvent ? parseRunningValue(mark) : parseFieldValue(mark);
+
+                return {
+                    athlete: entry.athlete || entry.name || "Unknown Athlete",
+                    team: entry.team || entry.school || "",
+                    mark,
+                    regional: getRegionalLabel(entry.meet || entry.meet_name || entry.source || ""),
+                    score,
+                };
+            })
+            .filter((entry) => entry.mark)
+            .sort((left, right) => {
+                const leftValid = Number.isFinite(left.score);
+                const rightValid = Number.isFinite(right.score);
+                if (!leftValid && !rightValid) {
+                    return left.athlete.localeCompare(right.athlete);
+                }
+                if (!leftValid) {
+                    return 1;
+                }
+                if (!rightValid) {
+                    return -1;
+                }
+
+                return isRunningEvent ? left.score - right.score : right.score - left.score;
+            })
+            .slice(0, 16);
+
+        if (sorted.length > 0) {
+            normalizedEvents[eventName] = sorted;
+        }
+    });
+
+    return {
+        generatedAt: data.generated_at || data.generatedAt || "",
+        sourceMeets: Array.isArray(data.source_meets) ? data.source_meets : [],
+        events: normalizedEvents,
+    };
+}
+
+function getQualifierEventOrder(eventsMap) {
+    return getQualifierStructuredEvents(eventsMap).orderedEventNames;
+}
+
+function renderQualifierEventTabs() {
+    qualifierEventTabsEl.innerHTML = "";
+
+    if (!regionalQualifierData || !regionalQualifierData.events) {
+        return;
+    }
+
+    const { orderedEventNames } = getQualifierStructuredEvents(regionalQualifierData.events);
+    if (orderedEventNames.length === 0) {
+        return;
+    }
+
+    const grid = document.createElement("div");
+    grid.className = "qualifier-pill-grid";
+
+    ["Girls", "Boys"].forEach((gender) => {
+        const column = document.createElement("section");
+        column.className = "qualifier-pill-column";
+
+        ["B", "A"].forEach((division) => {
+            const section = document.createElement("div");
+            section.className = "qualifier-pill-section";
+
+            const title = document.createElement("h3");
+            title.className = "qualifier-pill-title";
+            title.textContent = `${division} ${gender}`;
+            section.appendChild(title);
+
+            const buttonWrap = document.createElement("div");
+            buttonWrap.className = "event-tabs";
+
+            orderedEventNames.forEach((eventName) => {
+                const meta = parseRegionalEventMeta(eventName);
+                if (meta.gender !== gender || meta.division !== division) {
+                    return;
+                }
+
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "event-tab-button";
+                button.textContent = meta.normalizedEvent || eventName;
+                button.setAttribute("role", "tab");
+                button.setAttribute("aria-selected", String(eventName === activeQualifierEvent));
+                if (eventName === activeQualifierEvent) {
+                    button.classList.add("event-tab-button--active");
+                }
+
+                button.addEventListener("click", () => {
+                    activeQualifierEvent = eventName;
+                    renderRegionalQualifierResults();
+                });
+
+                buttonWrap.appendChild(button);
+            });
+
+            section.appendChild(buttonWrap);
+            column.appendChild(section);
+        });
+
+        grid.appendChild(column);
+    });
+
+    qualifierEventTabsEl.appendChild(grid);
+}
+
+function renderRegionalQualifierResults() {
+    qualifierResultsEl.innerHTML = "";
+
+    if (!regionalQualifierData || !regionalQualifierData.events) {
+        qualifierStatusTextEl.textContent = "Regional qualifier data not available yet. Add regional_qualifiers.json to enable this view.";
+        qualifierEventTabsEl.innerHTML = "";
+        return;
+    }
+
+    const orderedEvents = getQualifierEventOrder(regionalQualifierData.events);
+    if (orderedEvents.length === 0) {
+        qualifierStatusTextEl.textContent = "Regional qualifier data loaded, but no event results were found.";
+        qualifierEventTabsEl.innerHTML = "";
+        return;
+    }
+
+    if (!activeQualifierEvent || !regionalQualifierData.events[activeQualifierEvent]) {
+        activeQualifierEvent = orderedEvents[0];
+    }
+
+    const eventRows = regionalQualifierData.events[activeQualifierEvent] || [];
+    qualifierStatusTextEl.textContent = `Showing top ${eventRows.length} for ${activeQualifierEvent}.`;
+    renderQualifierEventTabs();
+
+    const sourceText = [];
+    if (regionalQualifierData.sourceMeets.length > 0) {
+        sourceText.push(`Sources: ${regionalQualifierData.sourceMeets.join(" • ")}`);
+    }
+    if (regionalQualifierData.generatedAt) {
+        sourceText.push(`Updated: ${regionalQualifierData.generatedAt}`);
+    }
+
+    if (sourceText.length > 0) {
+        const meta = document.createElement("p");
+        meta.className = "qualifier-meta";
+        meta.textContent = sourceText.join(" | ");
+        qualifierResultsEl.appendChild(meta);
+    }
+
+    const tableWrap = document.createElement("div");
+    tableWrap.className = "qualifier-table-wrap";
+
+    const table = document.createElement("table");
+    table.className = "qualifier-table";
+
+    const thead = document.createElement("thead");
+    thead.innerHTML = "<tr><th>Rank</th><th>Athlete</th><th>Team</th><th>Mark</th><th>Regional</th></tr>";
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    eventRows.forEach((entry, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${index + 1}</td><td>${entry.athlete}</td><td>${entry.team || "-"}</td><td>${entry.mark}</td><td>${entry.regional || "-"}</td>`;
+        tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+
+    tableWrap.appendChild(table);
+    qualifierResultsEl.appendChild(tableWrap);
+}
 
 function formatRunningMark(mark) {
     if (typeof mark !== "string") {
@@ -401,22 +775,36 @@ searchInput.addEventListener("input", (event) => {
 
 async function loadAthletes() {
     try {
-        const [data, goalsData, divisionTargetsData, divisionAssignmentsData] = await Promise.all([
+        const [data, goalsData, divisionTargetsData, divisionAssignmentsData, regionalQualifierRawData] = await Promise.all([
             loadJson("./athlete_records.json", "Could not load athlete_records.json"),
             loadJson("./athlete_goals.json", "Could not load athlete_goals.json", { optional: true }),
             loadJson("./division_targets.json", "Could not load division_targets.json", { optional: true }),
             loadJson("./athlete_divisions.json", "Could not load athlete_divisions.json", { optional: true }),
+            loadJson("./regional_qualifiers.json", "Could not load regional_qualifiers.json", { optional: true }),
         ]);
 
         athletes = Array.isArray(data.athletes) ? data.athletes : [];
         athleteGoals = normalizeGoalMap(goalsData);
         divisionTargets = normalizeDivisionTargets(divisionTargetsData);
         athleteDivisionAssignments = normalizeDivisionAssignments(divisionAssignmentsData);
+        regionalQualifierData = normalizeRegionalQualifierData(regionalQualifierRawData);
         storedDivisionAssignments = loadStoredDivisionAssignments();
         statusTextEl.textContent = "Start typing to search.";
+        renderRegionalQualifierResults();
     } catch (error) {
         statusTextEl.textContent = "Could not load athlete data. Check athlete_records.json and run with a local server.";
+        qualifierStatusTextEl.textContent = "Could not load regional qualifier data.";
     }
 }
+
+modeAthletesBtn.addEventListener("click", () => {
+    setActiveMode("athletes");
+});
+
+modeQualifiersBtn.addEventListener("click", () => {
+    setActiveMode("qualifiers");
+});
+
+setActiveMode("athletes");
 
 loadAthletes();

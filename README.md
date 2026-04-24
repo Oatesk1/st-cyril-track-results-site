@@ -11,6 +11,7 @@ A very simple starter website shell where parents can search for an athlete by n
 - `athlete_goals.json` - optional goal marks by athlete and event for chart target lines
 - `division_targets.json` - generated benchmark lines by division and event from MileSplit results
 - `athlete_divisions.json` - starter athlete-to-division assignments for benchmark charts
+- `regional_qualifiers.json` - optional aggregated top-16 regional qualifiers by event (first two meets combined)
 - `build_division_targets.py` - regenerates `division_targets.json` from the MileSplit raw results page
 
 ## Data format
@@ -113,6 +114,51 @@ To regenerate division benchmarks from the MileSplit source page, run:
 ```powershell
 c:/Users/kevin/athlete-records-starter/.venv/Scripts/python.exe build_division_targets.py
 ```
+
+## Regional qualifiers view (new)
+
+The site now has two entry options:
+
+- `Athlete Records` - existing search interface (unchanged)
+- `Regional Qualifiers` - event tabs showing top 16 qualifiers to-date
+
+To populate the new Regional Qualifiers mode, add an optional `regional_qualifiers.json` file in this folder.
+
+Expected format:
+
+```json
+{
+	"generated_at": "2026-04-24T18:30:00",
+	"source_meets": [
+		"Regional Meet 1",
+		"Regional Meet 2"
+	],
+	"events": {
+		"100M": [
+			{
+				"athlete": "Runner, Ava",
+				"team": "St. Cyril",
+				"mark": "13.51",
+				"meet": "Regional Meet 1"
+			}
+		],
+		"SP": [
+			{
+				"athlete": "Thrower, Leo",
+				"team": "St. Cyril",
+				"mark": "34-08.50",
+				"meet": "Regional Meet 2"
+			}
+		]
+	}
+}
+```
+
+Notes:
+
+- Running events (`100M`, `200M`, `400M`, `800M`, `1600M`) are sorted fastest to slowest.
+- Field events (`JV`, `SP`, `LJ`) are sorted longest to shortest.
+- The UI automatically keeps the top 16 entries per event.
 
 ## Run locally
 
