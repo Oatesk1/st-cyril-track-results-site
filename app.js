@@ -369,14 +369,22 @@ function renderRegionalQualifierResults() {
     const table = document.createElement("table");
     table.className = "qualifier-table";
 
+    const isMobileView = window.matchMedia("(max-width: 640px)").matches;
+    const teamAndMarkHeaderCells = isMobileView
+        ? "<th>Mark</th><th>Team</th>"
+        : "<th>Team</th><th>Mark</th>";
+
     const thead = document.createElement("thead");
-    thead.innerHTML = "<tr><th>Rank</th><th>Athlete</th><th>Team</th><th>Mark</th><th>Regional</th></tr>";
+    thead.innerHTML = `<tr><th>Rank</th><th>Athlete</th>${teamAndMarkHeaderCells}<th>Regional</th></tr>`;
     table.appendChild(thead);
 
     const tbody = document.createElement("tbody");
     eventRows.forEach((entry, index) => {
         const row = document.createElement("tr");
-        row.innerHTML = `<td>${index + 1}</td><td>${entry.athlete}</td><td>${entry.team || "-"}</td><td>${entry.mark}</td><td>${entry.regional || "-"}</td>`;
+        const teamAndMarkCells = isMobileView
+            ? `<td>${entry.mark}</td><td>${entry.team || "-"}</td>`
+            : `<td>${entry.team || "-"}</td><td>${entry.mark}</td>`;
+        row.innerHTML = `<td>${index + 1}</td><td>${entry.athlete}</td>${teamAndMarkCells}<td>${entry.regional || "-"}</td>`;
         tbody.appendChild(row);
     });
     table.appendChild(tbody);
@@ -803,6 +811,12 @@ modeAthletesBtn.addEventListener("click", () => {
 
 modeQualifiersBtn.addEventListener("click", () => {
     setActiveMode("qualifiers");
+});
+
+window.matchMedia("(max-width: 640px)").addEventListener("change", () => {
+    if (!regionalQualifiersViewEl.classList.contains("regional-view--hidden")) {
+        renderRegionalQualifierResults();
+    }
 });
 
 setActiveMode("athletes");
