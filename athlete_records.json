@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-26T19:34:04",
+  "generated_at": "2026-04-27T11:06:23",
   "team": "St. Cyril of Jerusalem",
   "latest_meet_date": "4/26/2026",
   "events": [
@@ -54,6 +54,16 @@
           "events": {
             "200M": "42.23",
             "400M": "1:35.64"
+          },
+          "is_latest_meet": false
+        },
+        {
+          "meet_date": "3/22/2026",
+          "meet_name": "FIYA-Malibu March 22, 2026",
+          "source_file": "FIYA Meet 1 Malibu March 22, 2026.xlsx",
+          "events": {
+            "100M": "19.45",
+            "JV": "18-08.00"
           },
           "is_latest_meet": false
         },
@@ -119,6 +129,18 @@
             "200M": "28.69",
             "400M": "1:08.77",
             "SP": "33-01.00"
+          },
+          "is_latest_meet": false
+        },
+        {
+          "meet_date": "3/22/2026",
+          "meet_name": "FIYA-Malibu March 22, 2026",
+          "source_file": "FIYA Meet 1 Malibu March 22, 2026.xlsx",
+          "events": {
+            "100M": "13.95",
+            "200M": "29.97",
+            "400M": "1:09.84",
+            "SP": "29-10.00"
           },
           "is_latest_meet": false
         },
@@ -298,6 +320,17 @@
           "is_latest_meet": false
         },
         {
+          "meet_date": "3/22/2026",
+          "meet_name": "FIYA-Malibu March 22, 2026",
+          "source_file": "FIYA Meet 1 Malibu March 22, 2026.xlsx",
+          "events": {
+            "100M": "17.03",
+            "200M": "34.79",
+            "400M": "1:20.36"
+          },
+          "is_latest_meet": false
+        },
+        {
           "meet_date": "4/6/2025",
           "meet_name": "Cyo Alemany Regional Results April 2025",
           "source_file": "CYO Alemany Regional Results April 2025.htm",
@@ -460,6 +493,18 @@
           "is_latest_meet": false
         },
         {
+          "meet_date": "3/22/2026",
+          "meet_name": "FIYA-Malibu March 22, 2026",
+          "source_file": "FIYA Meet 1 Malibu March 22, 2026.xlsx",
+          "events": {
+            "200M": "35.58",
+            "400M": "1:23.64",
+            "800M": "3:25.37",
+            "LJ": "9-03.00"
+          },
+          "is_latest_meet": false
+        },
+        {
           "meet_date": "3/31/2025",
           "meet_name": "Red Raider Relays March 31, 2025",
           "source_file": "2025 raider relay results.pdf",
@@ -533,6 +578,15 @@
             "400M": "1:42.25"
           },
           "is_latest_meet": false
+        },
+        {
+          "meet_date": "3/22/2026",
+          "meet_name": "FIYA-Malibu March 22, 2026",
+          "source_file": "FIYA Meet 1 Malibu March 22, 2026.xlsx",
+          "events": {
+            "400M": "1:46.31"
+          },
+          "is_latest_meet": false
         }
       ]
     },
@@ -542,7 +596,7 @@
       "search_name": "prado, andrew",
       "personal_records": {
         "100M": "15.62",
-        "200M": "32.35",
+        "200M": "31.80",
         "JV": "78-03.00",
         "SP": "28-01.50",
         "LJ": "11-02.00"
@@ -588,6 +642,18 @@
           "is_latest_meet": false
         },
         {
+          "meet_date": "3/22/2026",
+          "meet_name": "FIYA-Malibu March 22, 2026",
+          "source_file": "FIYA Meet 1 Malibu March 22, 2026.xlsx",
+          "events": {
+            "100M": "16.21",
+            "200M": "31.80",
+            "SP": "23-11.00",
+            "LJ": "9-10.00"
+          },
+          "is_latest_meet": false
+        },
+        {
           "meet_date": "4/6/2025",
           "meet_name": "Cyo Alemany Regional Results April 2025",
           "source_file": "CYO Alemany Regional Results April 2025.htm",
@@ -618,14 +684,13 @@
       "search_name": "prado, emily",
       "personal_records": {
         "100M": "17.95",
-        "200M": "39.93",
+        "200M": "39.86",
         "JV": "30-00.00",
-        "LJ": "7-08.00"
+        "LJ": "8-02.00"
       },
       "pr_from_latest_meet": [
         "100M",
-        "JV",
-        "LJ"
+        "JV"
       ],
       "results": [
         {
@@ -663,6 +728,18 @@
           "is_latest_meet": false
         },
         {
+          "meet_date": "3/22/2026",
+          "meet_name": "FIYA-Malibu March 22, 2026",
+          "source_file": "FIYA Meet 1 Malibu March 22, 2026.xlsx",
+          "events": {
+            "100M": "18.30",
+            "200M": "39.86",
+            "JV": "25-09.00",
+            "LJ": "8-02.00"
+          },
+          "is_latest_meet": false
+        },
+        {
           "meet_date": "3/31/2025",
           "meet_name": "Red Raider Relays March 31, 2025",
           "source_file": "2025 raider relay results.pdf",
@@ -693,6 +770,15 @@
             "JV": "17-00.00"
           },
           "is_latest_meet": false
+        },
+        {
+          "meet_date": "3/22/2026",
+          "meet_name": "FIYA-Malibu March 22, 2026",
+          "source_file": "FIYA Meet 1 Malibu March 22, 2026.xlsx",
+          "events": {
+            "JV": "9-10.00"
+          },
+          "is_latest_meet": false
         }
       ]
     },
@@ -702,7 +788,8 @@
       "search_name": "prado, mia",
       "personal_records": {
         "100M": "20.46",
-        "200M": "46.84"
+        "200M": "46.84",
+        "JV": "17-05.00"
       },
       "pr_from_latest_meet": [],
       "results": [
@@ -713,6 +800,16 @@
           "events": {
             "100M": "20.46",
             "200M": "46.84"
+          },
+          "is_latest_meet": false
+        },
+        {
+          "meet_date": "3/22/2026",
+          "meet_name": "FIYA-Malibu March 22, 2026",
+          "source_file": "FIYA Meet 1 Malibu March 22, 2026.xlsx",
+          "events": {
+            "100M": "20.93",
+            "JV": "17-05.00"
           },
           "is_latest_meet": false
         }
@@ -751,6 +848,17 @@
             "200M": "41.46",
             "400M": "1:31.03",
             "LJ": "6-03.00"
+          },
+          "is_latest_meet": false
+        },
+        {
+          "meet_date": "3/22/2026",
+          "meet_name": "FIYA-Malibu March 22, 2026",
+          "source_file": "FIYA Meet 1 Malibu March 22, 2026.xlsx",
+          "events": {
+            "100M": "18.48",
+            "400M": "1:32.06",
+            "JV": "16-00.00"
           },
           "is_latest_meet": false
         }
@@ -828,6 +936,17 @@
             "100M": "14.63",
             "200M": "30.70",
             "400M": "1:12.66"
+          },
+          "is_latest_meet": false
+        },
+        {
+          "meet_date": "3/22/2026",
+          "meet_name": "FIYA-Malibu March 22, 2026",
+          "source_file": "FIYA Meet 1 Malibu March 22, 2026.xlsx",
+          "events": {
+            "100M": "14.60",
+            "200M": "30.46",
+            "400M": "1:13.25"
           },
           "is_latest_meet": false
         },

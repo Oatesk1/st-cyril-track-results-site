@@ -672,6 +672,7 @@ function renderMeetHistory(results = []) {
 
     const details = document.createElement("details");
     details.className = "meet-history";
+    details.open = true;
 
     const summary = document.createElement("summary");
     summary.className = "meet-history-summary";
