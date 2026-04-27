@@ -65,5 +65,14 @@ if errorlevel 1 (
 )
 
 echo.
+echo Updating regional qualifiers from all regional meet raw results...
+python "%~dp0build_regional_qualifiers.py"
+if errorlevel 1 (
+    echo.
+    echo Warning: Regional qualifiers refresh failed.
+    echo athlete_records.json was still updated successfully.
+)
+
+echo.
 echo Done. Website data is updated.
 echo Refresh your browser to see new results.

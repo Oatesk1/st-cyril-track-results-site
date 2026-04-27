@@ -11,7 +11,8 @@ A very simple starter website shell where parents can search for an athlete by n
 - `athlete_goals.json` - optional goal marks by athlete and event for chart target lines
 - `division_targets.json` - generated benchmark lines by division and event from MileSplit results
 - `athlete_divisions.json` - starter athlete-to-division assignments for benchmark charts
-- `regional_qualifiers.json` - optional aggregated top-16 regional qualifiers by event (first two meets combined)
+- `regional_qualifiers.json` - optional aggregated regional qualifiers by event (from four regional meets, top 8 per meet per event)
+- `build_regional_qualifiers.py` - regenerates `regional_qualifiers.json` from four regional meet raw results pages
 - `build_division_targets.py` - regenerates `division_targets.json` from the MileSplit raw results page
 
 ## Data format
@@ -160,6 +161,12 @@ Notes:
 - Field events (`JV`, `SP`, `LJ`) are sorted longest to shortest.
 - The UI automatically keeps the top 16 entries per event.
 
+To regenerate `regional_qualifiers.json` from all four regional meets, run:
+
+```powershell
+python build_regional_qualifiers.py
+```
+
 ## Run locally
 
 Run with a simple local server (recommended for loading JSON).
@@ -178,7 +185,7 @@ Then open:
 
 ## One-command data refresh
 
-To regenerate track data and copy the latest `athlete_records.json` into this website project, run:
+To regenerate track data, copy the latest `athlete_records.json`, and refresh regional qualifiers from all four meets, run:
 
 ```cmd
 C:\Users\kevin\athlete-records-starter\Sync_Track_Data.bat
