@@ -81,6 +81,14 @@ function getRegionalLabel(sourceValue) {
         return "St. Paul";
     }
 
+    if (source.includes("alemany") || source.includes("regionals-3") || source.includes("regional 3")) {
+        return "Alemany";
+    }
+
+    if (source.includes("damien") || source.includes("regionals-4") || source.includes("regional 4")) {
+        return "Damien";
+    }
+
     if (source.includes("regionals-1") || source.includes("regional 1")) {
         return "St. Anthony";
     }
