@@ -197,6 +197,12 @@ function normalizeRegionalQualifierData(data) {
         return null;
     }
 
+    const sourceMeets = Array.isArray(data.source_meets) ? data.source_meets : [];
+    const perMeetCap = Number(data.top_per_meet_per_event);
+    const qualifierLimit = Number.isFinite(perMeetCap) && perMeetCap > 0 && sourceMeets.length > 0
+        ? perMeetCap * sourceMeets.length
+        : 16;
+
     const normalizedEvents = {};
 
     Object.entries(eventsSource).forEach(([eventName, entries]) => {
@@ -244,7 +250,7 @@ function normalizeRegionalQualifierData(data) {
 
                 return isRunningEvent ? left.score - right.score : right.score - left.score;
             })
-            .slice(0, 16);
+            .slice(0, qualifierLimit);
 
         if (sorted.length > 0) {
             normalizedEvents[eventName] = sorted;
@@ -253,7 +259,7 @@ function normalizeRegionalQualifierData(data) {
 
     return {
         generatedAt: data.generated_at || data.generatedAt || "",
-        sourceMeets: Array.isArray(data.source_meets) ? data.source_meets : [],
+        sourceMeets,
         events: normalizedEvents,
     };
 }
