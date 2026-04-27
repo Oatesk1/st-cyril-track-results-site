@@ -127,8 +127,11 @@ function parseRegionalEventMeta(eventName) {
     const name = (eventName || "").toLowerCase();
 
     const gender = name.includes("girls") ? "Girls" : name.includes("boys") ? "Boys" : "";
-    const divisionMatch = name.match(/\((a|b)\)/i);
-    const division = divisionMatch ? divisionMatch[1].toUpperCase() : "";
+    // Support both title styles: (A)/(B) and "A"/"B".
+    const divisionMatch = name.match(/\((a|b)\)|"([ab])"/i);
+    const division = divisionMatch
+        ? (divisionMatch[1] || divisionMatch[2] || "").toUpperCase()
+        : "";
 
     let normalizedEvent = "";
     if (name.includes("100 meter")) normalizedEvent = "100M";
