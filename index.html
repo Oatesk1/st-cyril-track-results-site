@@ -21,7 +21,10 @@
         <section id="athleteRecordsView">
             <section class="search-card" aria-label="Athlete search">
                 <label for="nameSearch">Athlete name</label>
-                <input id="nameSearch" type="text" placeholder="Type a name, for example: Ava" autocomplete="off" />
+                <div class="search-input-wrap">
+                    <input id="nameSearch" type="text" placeholder="Type a name, for example: Ava" autocomplete="off" />
+                    <ul id="nameSuggestions" class="name-suggestions" role="listbox" aria-label="Athlete suggestions"></ul>
+                </div>
             </section>
 
             <section>

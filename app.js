@@ -794,9 +794,46 @@ function renderResults(matches, query) {
     }
 }
 
+const suggestionsEl = document.getElementById("nameSuggestions");
+
+function showSuggestions(matches) {
+    suggestionsEl.innerHTML = "";
+    if (matches.length <= 1) {
+        suggestionsEl.classList.remove("visible");
+        return;
+    }
+    matches.forEach((athlete) => {
+        const li = document.createElement("li");
+        li.textContent = athlete.name;
+        li.setAttribute("role", "option");
+        li.addEventListener("mousedown", (e) => {
+            e.preventDefault(); // prevent input blur before click registers
+            searchInput.value = athlete.name;
+            currentQuery = athlete.name.toLowerCase();
+            suggestionsEl.classList.remove("visible");
+            renderResults([athlete], currentQuery);
+        });
+        suggestionsEl.appendChild(li);
+    });
+    suggestionsEl.classList.add("visible");
+}
+
 searchInput.addEventListener("input", (event) => {
     currentQuery = event.target.value.trim().toLowerCase();
-    renderResults(getMatches(currentQuery), currentQuery);
+    const matches = getMatches(currentQuery);
+    showSuggestions(matches);
+    renderResults(matches, currentQuery);
+});
+
+searchInput.addEventListener("blur", () => {
+    suggestionsEl.classList.remove("visible");
+});
+
+searchInput.addEventListener("focus", () => {
+    if (currentQuery) {
+        const matches = getMatches(currentQuery);
+        showSuggestions(matches);
+    }
 });
 
 async function loadAthletes() {
