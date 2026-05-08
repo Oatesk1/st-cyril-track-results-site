@@ -582,7 +582,7 @@ function renderDivisionSelector(athlete) {
 
     const helpText = document.createElement("p");
     helpText.className = "division-selector-help";
-    helpText.textContent = "Controls which 2025 CYO benchmark marks are shown with the chart.";
+    helpText.textContent = "Controls which 2026 CYO benchmark marks are shown with the chart.";
     wrapper.appendChild(helpText);
 
     return wrapper;

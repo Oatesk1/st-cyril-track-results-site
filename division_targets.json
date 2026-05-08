@@ -1,8 +1,8 @@
 {
   "source": {
-    "meet": "CYO-LA Finals 2025",
-    "source_url": "https://ca.milesplit.com/meets/687874-cyo-la-finals-2025/results/1168890/raw",
-    "generated_on": "2026-04-18",
+    "meet": "CYO-LA Finals 2026",
+    "source_url": "https://ca.milesplit.com/meets/755947-cyo-la-finals-2026/results/1297876?type=raw",
+    "generated_on": "2026-05-08",
     "notes": [
       "Prelim Qualifying is the last listed mark in the prelim results.",
       "Finals Qualifying is the prelim mark at the same rank as the size of the finals field.",
@@ -15,43 +15,43 @@
       "events": {
         "LJ": {
           "prelim_qualifying": "9-1.50",
-          "finals_qualifying": "11-10",
-          "winner": "15-6.50"
+          "finals_qualifying": "11-11.50",
+          "winner": "14-2.50"
         },
         "SP": {
-          "prelim_qualifying": "11-10",
-          "finals_qualifying": "24-11",
-          "winner": "30-5.50"
+          "prelim_qualifying": "15-11",
+          "finals_qualifying": "23-10",
+          "winner": "35-2.50"
         },
         "JV": {
-          "prelim_qualifying": "41-5",
-          "finals_qualifying": "83-0",
-          "winner": "103-11"
+          "prelim_qualifying": "42-8",
+          "finals_qualifying": "86-9",
+          "winner": "127-0"
         },
         "1600M": {
-          "prelim_qualifying": "8:00.32",
-          "finals_qualifying": "6:05.04",
-          "winner": "5:13.94"
+          "prelim_qualifying": "7:19.59",
+          "finals_qualifying": "6:04.17",
+          "winner": "5:25.33"
         },
         "400M": {
-          "prelim_qualifying": "1:27.75",
-          "finals_qualifying": "1:11.74",
-          "winner": "1:03.41"
+          "prelim_qualifying": "1:28.42",
+          "finals_qualifying": "1:11.98",
+          "winner": "1:02.81"
         },
         "100M": {
-          "prelim_qualifying": "17.20",
-          "finals_qualifying": "14.44",
-          "winner": "13.33"
+          "prelim_qualifying": "16.41",
+          "finals_qualifying": "14.29",
+          "winner": "12.88"
         },
         "800M": {
-          "prelim_qualifying": "3:22.62",
-          "finals_qualifying": "2:50.26",
-          "winner": "2:35.40"
+          "prelim_qualifying": "3:23.06",
+          "finals_qualifying": "2:50.55",
+          "winner": "2:28.38"
         },
         "200M": {
-          "prelim_qualifying": "35.44",
-          "finals_qualifying": "31.24",
-          "winner": "28.01"
+          "prelim_qualifying": "35.93",
+          "finals_qualifying": "29.49",
+          "winner": "27.07"
         }
       }
     },
@@ -59,44 +59,44 @@
       "label": "Division B Girls",
       "events": {
         "LJ": {
-          "prelim_qualifying": "7-6.25",
-          "finals_qualifying": "11-3",
-          "winner": "13-8"
+          "prelim_qualifying": "7-4",
+          "finals_qualifying": "11-9.50",
+          "winner": "14-1"
         },
         "SP": {
-          "prelim_qualifying": "15-3",
-          "finals_qualifying": "20-4.50",
-          "winner": "31-8"
+          "prelim_qualifying": "13-3",
+          "finals_qualifying": "21-6",
+          "winner": "27-5"
         },
         "JV": {
-          "prelim_qualifying": "30-7",
-          "finals_qualifying": "54-10",
-          "winner": "84-11"
+          "prelim_qualifying": "27-6",
+          "finals_qualifying": "69-6",
+          "winner": "87-11"
         },
         "1600M": {
-          "prelim_qualifying": "10:02.91",
-          "finals_qualifying": "6:41.43",
-          "winner": "5:38.52"
+          "prelim_qualifying": "7:29.43",
+          "finals_qualifying": "6:36.17",
+          "winner": "5:57.21"
         },
         "400M": {
-          "prelim_qualifying": "1:30.75",
-          "finals_qualifying": "1:15.49",
-          "winner": "1:07.14"
+          "prelim_qualifying": "1:27.75",
+          "finals_qualifying": "1:14.76",
+          "winner": "1:04.39"
         },
         "100M": {
-          "prelim_qualifying": "17.54",
-          "finals_qualifying": "14.72",
-          "winner": "13.81"
+          "prelim_qualifying": "16.08",
+          "finals_qualifying": "14.82",
+          "winner": "13.38"
         },
         "800M": {
-          "prelim_qualifying": "3:54.20",
-          "finals_qualifying": "3:01.64",
-          "winner": "2:33.37"
+          "prelim_qualifying": "3:53.64",
+          "finals_qualifying": "3:02.19",
+          "winner": "2:39.42"
         },
         "200M": {
-          "prelim_qualifying": "38.35",
-          "finals_qualifying": "30.55",
-          "winner": "28.63"
+          "prelim_qualifying": "36.04",
+          "finals_qualifying": "31.32",
+          "winner": "27.66"
         }
       }
     },
@@ -104,44 +104,44 @@
       "label": "1A Boys",
       "events": {
         "800M": {
-          "prelim_qualifying": "3:20.05",
-          "finals_qualifying": "2:35.35",
-          "winner": "2:20.94"
+          "prelim_qualifying": "3:17.43",
+          "finals_qualifying": "2:26.55",
+          "winner": "2:16.14"
         },
         "JV": {
-          "prelim_qualifying": "47-0",
-          "finals_qualifying": "106-7",
-          "winner": "147-7"
+          "prelim_qualifying": "59-1",
+          "finals_qualifying": "127-0",
+          "winner": "165-10"
         },
         "1600M": {
-          "prelim_qualifying": "7:55.31",
-          "finals_qualifying": "5:46.23",
-          "winner": "4:58.81"
+          "prelim_qualifying": "6:43.00",
+          "finals_qualifying": "5:29.88",
+          "winner": "4:55.99"
         },
         "400M": {
-          "prelim_qualifying": "1:16.98",
-          "finals_qualifying": "1:04.44",
-          "winner": "55.45"
+          "prelim_qualifying": "1:11.92",
+          "finals_qualifying": "1:02.10",
+          "winner": "55.42"
         },
         "100M": {
-          "prelim_qualifying": "14.70",
-          "finals_qualifying": "12.93",
-          "winner": "11.93"
+          "prelim_qualifying": "14.67",
+          "finals_qualifying": "12.81",
+          "winner": "12.15"
         },
         "200M": {
-          "prelim_qualifying": "33.20",
-          "finals_qualifying": "26.98",
-          "winner": "25.16"
+          "prelim_qualifying": "31.77",
+          "finals_qualifying": "26.13",
+          "winner": "24.82"
         },
         "LJ": {
-          "prelim_qualifying": "10-10",
-          "finals_qualifying": "14-4.50",
-          "winner": "16-6"
+          "prelim_qualifying": "11-10.50",
+          "finals_qualifying": "15-0",
+          "winner": "17-4"
         },
         "SP": {
-          "prelim_qualifying": "15-8",
-          "finals_qualifying": "32-0.50",
-          "winner": "44-4"
+          "prelim_qualifying": "20-11",
+          "finals_qualifying": "34-3",
+          "winner": "44-7"
         }
       }
     },
@@ -149,44 +149,44 @@
       "label": "1A Girls",
       "events": {
         "JV": {
-          "prelim_qualifying": "37-4",
-          "finals_qualifying": "68-10",
-          "winner": "121-5"
+          "prelim_qualifying": "30-11",
+          "finals_qualifying": "73-9",
+          "winner": "134-8"
         },
         "1600M": {
-          "prelim_qualifying": "7:34.93",
-          "finals_qualifying": "6:24.00",
-          "winner": "5:50.87"
+          "prelim_qualifying": "7:07.63",
+          "finals_qualifying": "6:20.12",
+          "winner": "5:38.63"
         },
         "400M": {
-          "prelim_qualifying": "1:29.21",
-          "finals_qualifying": "1:11.10",
-          "winner": "1:03.22"
+          "prelim_qualifying": "1:29.46",
+          "finals_qualifying": "1:10.90",
+          "winner": "1:05.40"
         },
         "100M": {
-          "prelim_qualifying": "15.94",
-          "finals_qualifying": "14.65",
-          "winner": "13.43"
+          "prelim_qualifying": "15.27",
+          "finals_qualifying": "13.98",
+          "winner": "13.52"
         },
         "800M": {
-          "prelim_qualifying": "3:36.49",
-          "finals_qualifying": "2:53.47",
-          "winner": "2:30.34"
+          "prelim_qualifying": "3:44.36",
+          "finals_qualifying": "2:47.96",
+          "winner": "2:33.35"
         },
         "200M": {
-          "prelim_qualifying": "35.36",
-          "finals_qualifying": "30.47",
-          "winner": "27.90"
+          "prelim_qualifying": "33.21",
+          "finals_qualifying": "29.48",
+          "winner": "27.79"
         },
         "LJ": {
-          "prelim_qualifying": "10-0",
-          "finals_qualifying": "12-1.50",
-          "winner": "15-3"
+          "prelim_qualifying": "10-6",
+          "finals_qualifying": "13-2.50",
+          "winner": "14-8.50"
         },
         "SP": {
-          "prelim_qualifying": "17-11.50",
-          "finals_qualifying": "25-3",
-          "winner": "29-10"
+          "prelim_qualifying": "15-5.50",
+          "finals_qualifying": "26-5.50",
+          "winner": "30-4.50"
         }
       }
     }

@@ -5,7 +5,7 @@ from datetime import date
 from pathlib import Path
 
 
-RAW_RESULTS_URL = "https://ca.milesplit.com/meets/687874-cyo-la-finals-2025/results/1168890/raw"
+RAW_RESULTS_URL = "https://ca.milesplit.com/meets/755947-cyo-la-finals-2026/results/1297876?type=raw"
 OUTPUT_PATH = Path("division_targets.json")
 
 GROUP_LABELS = {
@@ -139,7 +139,7 @@ def build_targets(sections):
 
     return {
         "source": {
-            "meet": "CYO-LA Finals 2025",
+            "meet": "CYO-LA Finals 2026",
             "source_url": RAW_RESULTS_URL,
             "generated_on": str(date.today()),
             "notes": [
