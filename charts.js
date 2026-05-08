@@ -32,19 +32,19 @@ const EVENT_THEMES = {
 
 const TARGET_LINE_STYLES = {
     prelim_qualifying: {
-        label: "2025 CYO Prelim Qual.",
+        label: "2026 CYO Prelim Qual.",
         color: "#597796",
         dash: [6, 4],
         pillClass: "chart-pill--prelim",
     },
     finals_qualifying: {
-        label: "2025 CYO Finals Qual.",
+        label: "2026 CYO Finals Qual.",
         color: "#b47b17",
         dash: [10, 5],
         pillClass: "chart-pill--finals",
     },
     winner: {
-        label: "2025 CYO Winner",
+        label: "2026 CYO Winner",
         color: "#b54d3e",
         dash: [2, 4],
         pillClass: "chart-pill--winner",
